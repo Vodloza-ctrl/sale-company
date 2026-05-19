@@ -83,21 +83,3 @@ wrangler deploy
 5. Add Paynow payment creation and polling route.
 6. Add R2 signed upload route or Worker-mediated upload route.
 7. Add Cloudflare Cron route for booking reminders.
-
-
-## Supabase Auth Frontend
-
-This package includes:
-
-- `public/login.html`
-- `public/assets/js/supabase-config.js`
-- `public/assets/js/auth.js`
-- protected `public/dashboard.html`
-
-Supabase is used for identity only. The frontend sends the Supabase access token to the Cloudflare Worker using the `Authorization: Bearer <token>` header. The Worker should still verify the JWT and check tenant authority through D1 before production use.
-
-Current Supabase config lives in:
-
-```txt
-public/assets/js/config.js
-```
