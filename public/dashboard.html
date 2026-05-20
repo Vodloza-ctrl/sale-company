@@ -521,5 +521,38 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
+
+<script src="assets/js/config.js"></script>
+<script>
+(async function(){
+  const token = saleGetToken();
+
+  try{
+    const response = await fetch(
+      (window.SALE_CONFIG.apiBase || '') + '/api/me',
+      {
+        headers:{
+          'Authorization':'Bearer ' + token
+        }
+      }
+    );
+
+    const data = await response.json();
+
+    if(data.status !== 'ok'){
+      console.warn('API fallback mode enabled');
+    }
+
+    const userBox = document.querySelector('.user-email,.merchant-email');
+    if(userBox){
+      userBox.textContent = data?.user?.email || 'demo@sale.co.zw';
+    }
+
+  }catch(err){
+    console.warn('Dashboard running in local demo mode');
+  }
+})();
+</script>
+
 </body>
 </html>

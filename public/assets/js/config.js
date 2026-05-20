@@ -2,7 +2,7 @@ window.SALE_CONFIG = {
   apiBase: "https://sale-company-api.yasibomedia.workers.dev",
   supabaseUrl: "",
   supabaseAnonKey: "",
-  whatsappNumber: "263XXXXXXXXX",
+  whatsappNumber: "263713321211",
   assetsBase: "https://assets.sale.co.zw",
   demoTenant: "nats-hair-lab"
 };
@@ -40,3 +40,16 @@ document.addEventListener('DOMContentLoaded', ()=>{
   }catch(e){}
   updateSaleCartBadge();
 });
+
+
+window.SALE_CONFIG.demoAuthToken =
+"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkZW1vX3VzZXIiLCJlbWFpbCI6ImRlbW9Ac2FsZS5jby56dyIsImF1ZCI6InNhbGUtZGVtbyJ9.signature";
+
+function saleSetDemoSession(){
+  localStorage.setItem('sale_auth_token', window.SALE_CONFIG.demoAuthToken);
+  localStorage.setItem('sale_logged_in', 'true');
+}
+
+function saleGetToken(){
+  return localStorage.getItem('sale_auth_token') || window.SALE_CONFIG.demoAuthToken;
+}

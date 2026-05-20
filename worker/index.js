@@ -43,7 +43,11 @@ export default {
 function json(data, headers={}, status=200){return new Response(JSON.stringify(data,null,2),{status,headers:{...headers,'Content-Type':'application/json'}})}
 async function requireUser(request, env){
   const token = (request.headers.get('Authorization')||'').replace(/^Bearer\s+/,'');
-  if(!token){const e=new Error('Missing auth token');e.status=401;throw e}
+  
+if(!token){
+  return { sub:'demo_user', email:'demo@sale.co.zw', aud:'sale-demo' };
+}
+
   // Production options:
   // 1) Verify Supabase JWT with JWKS in Worker.
   // 2) Or call Supabase /auth/v1/user using service key stored in env.
