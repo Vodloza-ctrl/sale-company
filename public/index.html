@@ -241,7 +241,7 @@ footer{background:var(--cream-2)}
         <a href="#dashboards">Dashboards</a>
         <a href="#pricing">Pricing</a>
       </nav>
-      <a class="help" href="https://wa.me/263719362231?text=I%20want%20to%20start%20selling%20professionally%20with%20Sale%20Company">Get help</a>
+      <a class="help" href="https://wa.me/263XXXXXXXXX?text=I%20want%20to%20start%20selling%20professionally%20with%20Sale%20Company">Get help</a>
     </div>
   </div>
 </header>
@@ -255,7 +255,7 @@ footer{background:var(--cream-2)}
       <h1>Your WhatsApp is already a store. Let&rsquo;s make it work like <em>one.</em></h1>
       <p class="lead">Sale Company gives growing businesses a WhatsApp store, a proper webstore, bookings, payments and a private dashboard &mdash; without changing how your customers already talk to you.</p>
       <div class="hero-actions">
-        <a class="btn primary" href="https://wa.me/263719362231?text=I%20want%20to%20set%20up%20my%20business%20with%20Sale%20Company">Start on WhatsApp</a>
+        <a class="btn primary" href="https://wa.me/263XXXXXXXXX?text=I%20want%20to%20set%20up%20my%20business%20with%20Sale%20Company">Start on WhatsApp</a>
         <a class="btn secondary" href="#solutions">See business tools</a>
       </div>
       <div class="hero-note">
@@ -385,7 +385,7 @@ footer{background:var(--cream-2)}
           <div><strong>Sell on WhatsApp</strong><span>Keep the channel your customers already use daily.</span></div>
           <div><strong>Grow gradually</strong><span>Start simple, then add more tools as your business grows.</span></div>
         </div>
-        <a class="outline-btn" href="https://wa.me/263719362231?text=I%20want%20to%20find%20out%20more%20about%20Sale%20Company">Talk to us today</a>
+        <a class="outline-btn" href="https://wa.me/263XXXXXXXXX?text=I%20want%20to%20find%20out%20more%20about%20Sale%20Company">Talk to us today</a>
       </div>
     </div>
 
@@ -580,7 +580,7 @@ footer{background:var(--cream-2)}
             <li>Basic order records</li>
             <li>Shareable customer link</li>
           </ul>
-          <a class="plan-cta" href="https://wa.me/263719362231?text=I%20want%20the%20Lite%20WhatsApp%20Store">Get started</a>
+          <a class="plan-cta" href="https://wa.me/263XXXXXXXXX?text=I%20want%20the%20Lite%20WhatsApp%20Store">Get started</a>
         </div>
         <div class="pricing-card featured">
           <p class="plan-name">Smart Business Store</p>
@@ -596,7 +596,7 @@ footer{background:var(--cream-2)}
             <li>Automated order notifications</li>
             <li>Delivery &amp; collection tracking</li>
           </ul>
-          <a class="plan-cta" href="https://wa.me/263719362231?text=I%20want%20the%20Standard%20Business%20Store">Get started</a>
+          <a class="plan-cta" href="https://wa.me/263XXXXXXXXX?text=I%20want%20the%20Standard%20Business%20Store">Get started</a>
         </div>
         <div class="pricing-card">
           <p class="plan-name">Advanced System</p>
@@ -612,7 +612,7 @@ footer{background:var(--cream-2)}
             <li>API integrations</li>
             <li>Priority setup support</li>
           </ul>
-          <a class="plan-cta" href="https://wa.me/263719362231?text=I%20want%20to%20discuss%20a%20Premium%20system">Talk to us</a>
+          <a class="plan-cta" href="https://wa.me/263XXXXXXXXX?text=I%20want%20to%20discuss%20a%20Premium%20system">Talk to us</a>
         </div>
       </div>
     </div>
@@ -628,7 +628,7 @@ footer{background:var(--cream-2)}
           <div><strong>Bookings</strong><span>For services that need appointments, deposits and reminders to work properly.</span></div>
           <div><strong>Dashboard</strong><span>For tracking sales, orders and customer activity in one clear place.</span></div>
         </div>
-        <a class="outline-btn" href="https://wa.me/263719362231?text=I%20want%20to%20start%20my%20business%20with%20Sale%20Company">Start my business</a>
+        <a class="outline-btn" href="https://wa.me/263XXXXXXXXX?text=I%20want%20to%20start%20my%20business%20with%20Sale%20Company">Start my business</a>
       </div>
     </div>
   </div>
@@ -676,16 +676,51 @@ footer{background:var(--cream-2)}
       <a href="#">Send feedback</a>
       <br>
       <h4>Talk to us</h4>
-      <a href="#">+263 71 936 2231</a>
+      <a href="#">+263 XX XXX XXXX</a>
     </div>
   </div>
   <div class="footer-bottom">Sale Company &bull; Tools for smart businesses.</div>
   <div class="colorbar"></div>
 </footer>
 
-<a class="chat" href="https://wa.me/263719362231?text=I%20need%20help%20with%20Sale%20Company" title="Chat on WhatsApp">&#x1F4AC;</a>
+<a class="chat" href="https://wa.me/263XXXXXXXXX?text=I%20need%20help%20with%20Sale%20Company" title="Chat on WhatsApp">&#x1F4AC;</a>
 
 <script src="assets/js/config.js"></script>
 <script src="assets/js/app.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // Mobile nav
+  const nav = document.querySelector('.nav-links,.main-nav,nav ul');
+  const header = document.querySelector('header') || document.body;
+  if(nav && !document.querySelector('.mobile-menu-btn')){
+    const btn = document.createElement('button');
+    btn.className = 'mobile-menu-btn';
+    btn.innerHTML = '☰';
+    btn.style.cssText='position:fixed;top:14px;right:14px;z-index:9999;padding:10px 14px;border:none;border-radius:10px;background:#0F5B47;color:#fff;font-size:20px;';
+    btn.onclick = ()=> nav.classList.toggle('mobile-open');
+    header.appendChild(btn);
+  }
+
+  // Scroll animations
+  const els = document.querySelectorAll('.card,.feature,.section,section,.product-card');
+  const obs = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        e.target.style.opacity='1';
+        e.target.style.transform='translateY(0)';
+      }
+    });
+  }, {threshold:0.08});
+
+  els.forEach(el=>{
+    el.style.opacity='0';
+    el.style.transform='translateY(18px)';
+    el.style.transition='all .45s ease';
+    obs.observe(el);
+  });
+});
+</script>
+
 </body>
 </html>

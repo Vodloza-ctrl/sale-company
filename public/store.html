@@ -1,1 +1,36 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Store | Sale Company</title><link rel="stylesheet" href="assets/css/styles.css"><style>.topbar-store{background:#fff;border-bottom:1px solid #E4E0D8;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 24px}.brand-logo-sm{height:28px;width:auto}</style></head><body><nav class="topbar-store"><a href="index.html"><img class="brand-logo-sm" src="https://sale.co.zw/branding/logos/sale-logo-primary.svg" alt="Sale Company"></a><a class="btn light" href="dashboard.html" style="border:1px solid #E4E0D8;border-radius:4px;padding:9px 16px;font-size:13px;font-weight:800;color:#1F2933;text-decoration:none">Dashboard</a></nav><main class="wrap" style="padding:24px 0 60px"><div class="card" id="store-app"></div></main><script src="assets/js/config.js"></script><script src="assets/js/app.js"></script></body></html>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Store | Sale Company</title><link rel="stylesheet" href="assets/css/styles.css"><style>.topbar-store{background:#fff;border-bottom:1px solid #E4E0D8;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 24px}.brand-logo-sm{height:28px;width:auto}</style></head><body><nav class="topbar-store"><a href="index.html"><img class="brand-logo-sm" src="https://sale.co.zw/branding/logos/sale-logo-primary.svg" alt="Sale Company"></a><a class="btn light" href="dashboard.html" style="border:1px solid #E4E0D8;border-radius:4px;padding:9px 16px;font-size:13px;font-weight:800;color:#1F2933;text-decoration:none">Dashboard</a></nav><main class="wrap" style="padding:24px 0 60px"><div class="card" id="store-app"></div></main><script src="assets/js/config.js"></script><script src="assets/js/app.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // Mobile nav
+  const nav = document.querySelector('.nav-links,.main-nav,nav ul');
+  const header = document.querySelector('header') || document.body;
+  if(nav && !document.querySelector('.mobile-menu-btn')){
+    const btn = document.createElement('button');
+    btn.className = 'mobile-menu-btn';
+    btn.innerHTML = '☰';
+    btn.style.cssText='position:fixed;top:14px;right:14px;z-index:9999;padding:10px 14px;border:none;border-radius:10px;background:#0F5B47;color:#fff;font-size:20px;';
+    btn.onclick = ()=> nav.classList.toggle('mobile-open');
+    header.appendChild(btn);
+  }
+
+  // Scroll animations
+  const els = document.querySelectorAll('.card,.feature,.section,section,.product-card');
+  const obs = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        e.target.style.opacity='1';
+        e.target.style.transform='translateY(0)';
+      }
+    });
+  }, {threshold:0.08});
+
+  els.forEach(el=>{
+    el.style.opacity='0';
+    el.style.transform='translateY(18px)';
+    el.style.transition='all .45s ease';
+    obs.observe(el);
+  });
+});
+</script>
+
+</body></html>

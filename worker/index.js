@@ -63,3 +63,37 @@ async function getStorefront(env, slug){
   }
   return { status:'ok', tenant:{slug,business_name:'Nats Hair Lab',business_type:'booking',tagline:'Book hair and beauty services with paid deposits.',rating:4.8,whatsapp_number:'263XXXXXXXXX'}, items:[{name:'Knotless Braids',price:35,item_type:'service',category:'Hair',description:'Deposit required.'},{name:'Wash & Blow',price:12,item_type:'service',category:'Hair',description:'Quick appointment.'},{name:'Gel Nails',price:18,item_type:'service',category:'Beauty',description:'Book your slot.'}] };
 }
+
+
+// Sale Company frontend enhancements
+window.saleCart = window.saleCart || [];
+
+function addToSaleCart(item){
+  window.saleCart.push(item);
+  localStorage.setItem('sale_cart', JSON.stringify(window.saleCart));
+  updateSaleCartBadge();
+}
+
+function updateSaleCartBadge(){
+  const badge = document.querySelector('.cart-badge');
+  if(badge){
+    badge.textContent = window.saleCart.length;
+  }
+}
+
+document.addEventListener('click', (e)=>{
+  const chip = e.target.closest('[data-category]');
+  if(chip){
+    const category = chip.dataset.category;
+    document.querySelectorAll('[data-item-category]').forEach(card=>{
+      card.style.display = (category === 'all' || card.dataset.itemCategory === category) ? '' : 'none';
+    });
+  }
+});
+
+document.addEventListener('DOMContentLoaded', ()=>{
+  try{
+    window.saleCart = JSON.parse(localStorage.getItem('sale_cart') || '[]');
+  }catch(e){}
+  updateSaleCartBadge();
+});
