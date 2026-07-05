@@ -1,85 +1,156 @@
-# Sale Company Starter
+# sale.co.zw — Deployment Guide
 
-Cloudflare-first, Zvakho-style multi-tenant commerce starter for Zimbabwean solo operators and SMEs.
+## What's fixed in this build
 
-## What is included
+1. ✅ Root `index.html` IS the marketing page (no redirect needed)
+2. ✅ Render Worker passes `www.sale.co.zw` through to Pages instead of 404
+3. ✅ Auth Worker (`sale-cozw-auth.js`) — fully built. Handles login, account creation, sessions
+4. ✅ Dashboard API (`sale-cozw-dashboard.js`) — full CRUD: list, create, get, save, generate
+5. ✅ Schema aligned — `owners`, `sessions`, `otp_codes` tables match what Workers expect
 
-- Mobile-first public landing page
-- Universal storefront: booking, store, menu and catalogue modes
-- Tenant dashboard mockup: items, bookings, orders, reviews, payouts, settings
-- Platform admin mockup
-- Cloudflare Worker API starter
-- D1 schema for tenants, users, items, orders, bookings, reviews, payouts, notifications and audit logs
-- R2-ready asset strategy
-- Supabase Auth-ready login direction
-- WhatsApp-first CTAs
-- Safety and compliance notes
+---
 
-## Architecture
+## GitHub repo structure (push exactly this)
 
-Frontend uses static HTML/CSS/JS. It may know `SUPABASE_URL` and `SUPABASE_ANON_KEY` only.
+```
+index.html                  ← marketing page (served at sale.co.zw)
+_redirects                  ← Cloudflare Pages routing
+dashboard/customer.html     ← owner dashboard
+editor/index.html           ← site editor
+templates/*/index.html      ← 7 industry templates (preview only)
+api/                        ← Workers — deploy via wrangler (NOT via Pages)
+README.md
+```
 
-Secrets stay inside the Worker:
+The `api/` folder goes to GitHub for version control but Workers are deployed
+separately via wrangler, not by Pages.
 
-- Supabase service role key
-- Paynow keys
-- Email API keys
-- R2 credentials
-- D1 write logic
-- Admin logic
+---
 
-## Payment modes
-
-Each tenant supports:
-
-- `sale_unified` — Sale Company managed payments and payouts
-- `tenant_own_paynow` — merchant-owned payment integration
-- `manual` — WhatsApp/manual confirmation
-
-The customer experience stays unified. The Worker decides routing.
-
-## Data protection posture
-
-This starter follows a lean compliance posture:
-
-- Collect minimum customer data
-- Avoid national IDs, biometrics and unnecessary sensitive data
-- Tenant isolation through `tenant_id`
-- Audit important actions
-- Keep payout and payment changes logged
-- Use R2 for images; never store permanent upload secrets in frontend
-- Prepare for privacy policy, deletion requests and breach procedures
-
-## Deploy static frontend
-
-Upload `/public` to Cloudflare Pages.
-
-## Deploy Worker
+## Step 1 — D1 database
 
 ```bash
-cd sale-company-starter
-wrangler d1 create sale-company-db
-# paste database_id into wrangler.toml
-wrangler d1 execute sale-company-db --file=database/schema.sql
-wrangler d1 execute sale-company-db --file=database/seed.sql
-wrangler deploy
+# Create the database (once)
+wrangler d1 create sale-cozw-db
+
+# Run the schema
+wrangler d1 execute sale-cozw-db --file=api/schema.sql
+
+# Seed your first owner (replace with your real phone number)
+wrangler d1 execute sale-cozw-db --command="INSERT OR IGNORE INTO owners (id,phone,name) VALUES ('usr_001','263772000000','Admin')"
 ```
 
-## R2 asset folders
+---
 
-```txt
-/tenants/{tenant_id}/branding/logo.webp
-/tenants/{tenant_id}/banners/hero.webp
-/tenants/{tenant_id}/products/{item_id}.webp
-/tenants/{tenant_id}/services/{item_id}.webp
+## Step 2 — Deploy Workers
+
+### Render Worker (handles *.sale.co.zw)
+```bash
+wrangler deploy api/sale-cozw-render.js \
+  --name sale-cozw-render \
+  --compatibility-date 2024-01-01
+
+# Secrets
+wrangler secret put PLATFORM_ROOT       # sale.co.zw
+wrangler secret put PREVIEW_SECRET      # any random 32+ char string
 ```
 
-## Next build steps
+### Auth + Dashboard Worker (handles app.sale.co.zw)
 
-1. Replace config values in `public/assets/js/config.js`.
-2. Add real Supabase login in `login.html`.
-3. Implement JWT verification in Worker.
-4. Add tenant role checks before all dashboard actions.
-5. Add Paynow payment creation and polling route.
-6. Add R2 signed upload route or Worker-mediated upload route.
-7. Add Cloudflare Cron route for booking reminders.
+Both the auth Worker and dashboard Worker should be combined into ONE
+Worker deployed at app.sale.co.zw. The easiest way is to use a single
+entry point that routes between them. For now, deploy auth as the main
+Worker — it passes all non-/auth/* requests through (including /api/*
+which the dashboard API handles separately, OR combine them).
+
+**Option A — Two separate Workers with route splitting (recommended):**
+- `sale-cozw-auth` → handles `app.sale.co.zw/auth/*`
+- `sale-cozw-dashboard` → handles `app.sale.co.zw/api/*`
+
+```bash
+# Auth Worker
+wrangler deploy api/sale-cozw-auth.js \
+  --name sale-cozw-auth \
+  --compatibility-date 2024-01-01
+
+wrangler secret put OTP_HMAC_SECRET      # random 32+ chars
+wrangler secret put SESSION_SECRET       # random 32+ chars  
+wrangler secret put PREVIEW_HMAC_SECRET  # random 32+ chars (SAME value as PREVIEW_SECRET on render Worker)
+wrangler secret put MANYCHAT_API_TOKEN   # from ManyChat (optional — falls back to dev mode)
+wrangler secret put RESEND_API_KEY       # from Resend (optional)
+
+# Dashboard API Worker
+wrangler deploy api/sale-cozw-dashboard.js \
+  --name sale-cozw-dashboard \
+  --compatibility-date 2024-01-01
+```
+
+Both Workers need the D1 binding:
+```toml
+# In Cloudflare dashboard → Worker → Settings → Bindings → D1
+# Variable name: DB
+# Database: sale-cozw-db
+```
+
+### Payments Worker
+```bash
+wrangler deploy api/sale-cozw-payments.js \
+  --name sale-cozw-payments \
+  --compatibility-date 2024-01-01
+
+wrangler secret put PAYNOW_USD_ID
+wrangler secret put PAYNOW_USD_KEY
+wrangler secret put PAYNOW_ZIG_ID
+wrangler secret put PAYNOW_ZIG_KEY
+# Vars (not secrets):
+# ALLOWED_ORIGIN = https://app.sale.co.zw
+# RESULT_URL     = https://api.sale.co.zw/paynow/result
+# RETURN_URL     = https://app.sale.co.zw/payment-return
+```
+
+### Renewal Cron Worker
+```bash
+wrangler deploy api/sale-cozw-renewal-cron.js \
+  --name sale-cozw-renewal-cron \
+  --compatibility-date 2024-01-01
+```
+
+---
+
+## Step 3 — Cloudflare Pages
+
+1. Connect repo `Vodloza-ctrl/websites` to Cloudflare Pages
+2. **Build command**: (leave empty — static files)
+3. **Output directory**: `/` (repo root)
+4. **Root directory**: `/` (repo root)
+5. Custom domains: `sale.co.zw` and `www.sale.co.zw`
+
+The marketing page (`index.html`) is already at repo root — Pages serves it automatically.
+
+---
+
+## Step 4 — DNS / Worker Routes
+
+In Cloudflare DNS:
+```
+*.sale.co.zw    CNAME   sale-cozw-render.workers.dev   (Proxied)
+app.sale.co.zw  CNAME   sale-cozw-auth.workers.dev     (Proxied)
+api.sale.co.zw  CNAME   sale-cozw-payments.workers.dev (Proxied)
+```
+
+Worker routes (in Cloudflare dashboard):
+```
+*.sale.co.zw/*  → sale-cozw-render
+```
+
+---
+
+## Testing login (DEV_MODE)
+
+Set `DEV_MODE=1` on the auth Worker during testing. The OTP code will be
+returned in the API response as `dev_code` and shown on the login screen.
+Remove this before going live.
+
+```bash
+wrangler secret put DEV_MODE   # value: 1
+```

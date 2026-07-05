@@ -1,0 +1,674 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>Build your website — sale.co.zw</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700;800&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --green:#0F5B47;--green-dk:#0f6e39;--green-bg:#e8f5ee;--green-mid:#c6e8d4;
+  --gold:#a87d1a;--gold-bg:#fdf3dc;
+  --ink:#0d0f14;--ink2:#3d4251;--ink3:#6b7180;
+  --surface:#f0f2f6;--card:#ffffff;
+  --line:#e2e5eb;--line2:#d0d4dc;--red:#c0392b;
+  --r:16px;--r-sm:10px;--r-xs:7px;
+  --shadow:0 1px 3px rgba(13,15,20,.06),0 6px 20px rgba(13,15,20,.07);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%;background:var(--surface);color:var(--ink);
+  font-family:"Hanken Grotesk",system-ui,sans-serif;font-size:15px;line-height:1.5;
+  -webkit-font-smoothing:antialiased;overscroll-behavior:none}
+button,input,select{font-family:inherit}
+button{cursor:pointer;border:none;background:none}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--green);outline-offset:2px;border-radius:4px}
+.bar{background:var(--card);border-bottom:1px solid var(--line);padding:0 20px;
+  height:52px;display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:100}
+.logo{font-family:"Space Grotesk";font-weight:800;font-size:17px;letter-spacing:-.02em}
+.logo .tld{color:var(--green)}
+.logo-flag{display:inline-flex;flex-direction:column;gap:2px;margin-left:4px;vertical-align:middle}
+.logo-flag i{display:block;width:3px;height:3px;border-radius:50%}
+.logo-flag i:nth-child(1){background:var(--green)}
+.logo-flag i:nth-child(2){background:var(--gold)}
+.logo-flag i:nth-child(3){background:var(--red)}
+.bar-back{font-size:13px;font-weight:600;color:var(--ink3);padding:6px 10px;
+  border-radius:var(--r-xs);border:1.5px solid var(--line);display:flex;
+  align-items:center;gap:5px;transition:.12s}
+.bar-back:hover{border-color:var(--ink3);color:var(--ink)}
+.progress-wrap{height:4px;background:var(--line);position:sticky;top:52px;z-index:99}
+.progress-bar{height:100%;background:linear-gradient(90deg,var(--green),#22c55e);
+  transition:width .4s cubic-bezier(.4,0,.2,1);border-radius:0 2px 2px 0}
+.step-label{text-align:center;padding:14px 20px 0;font-size:12.5px;font-weight:600;
+  color:var(--ink3);letter-spacing:.04em;text-transform:uppercase}
+.step-label span{color:var(--green)}
+.screen{display:none;padding:20px 18px 80px;max-width:860px;margin:0 auto}
+.screen.active{display:block}
+.screen-head{margin-bottom:22px}
+.screen-head h1{font-family:"Space Grotesk";font-size:clamp(20px,5vw,28px);
+  font-weight:800;letter-spacing:-.025em;line-height:1.2;margin-bottom:6px}
+.screen-head p{color:var(--ink2);font-size:14px;line-height:1.6;max-width:500px}
+.ai-tag{display:inline-flex;align-items:center;gap:6px;
+  background:linear-gradient(135deg,#0d2818,#0f3d22);color:#4ade80;
+  font-size:11.5px;font-weight:700;letter-spacing:.05em;padding:4px 10px;
+  border-radius:20px;margin-bottom:10px}
+.ind-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+@media(min-width:520px){.ind-grid{grid-template-columns:repeat(4,1fr)}}
+@media(min-width:720px){.ind-grid{grid-template-columns:repeat(5,1fr)}}
+.ind-card{border:2px solid var(--line);border-radius:var(--r-sm);padding:13px 10px 11px;
+  cursor:pointer;transition:border-color .14s,background .14s,transform .1s;
+  background:var(--card);display:flex;flex-direction:column;align-items:center;
+  gap:6px;text-align:center;position:relative;-webkit-tap-highlight-color:transparent}
+.ind-card:active{transform:scale(.96)}
+.ind-card.sel{border-color:var(--green);background:var(--green-bg)}
+.ind-card .ic{font-size:26px;line-height:1}
+.ind-card .il{font-size:12.5px;font-weight:600;color:var(--ink);line-height:1.25}
+.ind-card .ck{position:absolute;top:6px;right:6px;width:17px;height:17px;
+  border-radius:50%;background:var(--green);color:#fff;display:none;
+  align-items:center;justify-content:center;font-size:9px;font-weight:800}
+.ind-card.sel .ck{display:flex}
+.tpl-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+@media(min-width:600px){.tpl-grid{grid-template-columns:repeat(3,1fr)}}
+.tpl-card{border:2.5px solid var(--line);border-radius:var(--r-sm);overflow:hidden;
+  cursor:pointer;transition:border-color .14s,transform .1s,box-shadow .14s;
+  background:var(--card);-webkit-tap-highlight-color:transparent}
+.tpl-card:active{transform:scale(.97)}
+.tpl-card.sel{border-color:var(--green);box-shadow:0 0 0 3px var(--green-mid)}
+.tpl-prev{height:100px;display:flex;flex-direction:column;position:relative;overflow:hidden}
+.tpl-nav-bar{height:10px;background:rgba(0,0,0,.25);display:flex;align-items:center;
+  gap:3px;padding:0 6px;flex-shrink:0}
+.tpl-nav-dot{width:3px;height:3px;border-radius:50%;background:rgba(255,255,255,.5)}
+.tpl-hero-area{flex:1;display:flex;flex-direction:column;justify-content:flex-end;
+  padding:7px 9px 9px;gap:3px}
+.tpl-h{height:6px;border-radius:2px;background:rgba(255,255,255,.88);width:65%}
+.tpl-p{height:3.5px;border-radius:2px;background:rgba(255,255,255,.42);width:80%}
+.tpl-cta{height:9px;border-radius:2px;width:38px;margin-top:3px}
+.tpl-rec{position:absolute;top:7px;right:7px;font-size:9.5px;font-weight:700;
+  padding:2px 6px;border-radius:10px;background:rgba(255,255,255,.2);color:#fff}
+.tpl-sel-mark{position:absolute;top:7px;left:7px;width:20px;height:20px;
+  border-radius:50%;background:var(--green);color:#fff;display:none;
+  align-items:center;justify-content:center;font-size:12px;font-weight:800;
+  box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.tpl-card.sel .tpl-sel-mark{display:flex}
+.tpl-body{padding:10px 12px 11px}
+.tpl-name{font-family:"Space Grotesk";font-size:13px;font-weight:700;margin-bottom:2px}
+.tpl-desc{font-size:11.5px;color:var(--ink3);line-height:1.35}
+.brief-card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+  padding:20px 18px;box-shadow:var(--shadow);max-width:520px;margin-top:12px}
+.fld-label{display:block;font-size:12px;font-weight:700;color:var(--ink3);
+  letter-spacing:.05em;text-transform:uppercase;margin-bottom:7px}
+.fld-input{width:100%;border:2px solid var(--line2);border-radius:var(--r-sm);
+  padding:13px 15px;font-size:16px;font-weight:600;color:var(--ink);
+  transition:border-color .15s;background:#fff}
+.fld-input:focus{outline:none;border-color:var(--green)}
+.fld-input::placeholder{color:#c0c4d0;font-weight:400}
+.slug-preview{font-size:13px;color:var(--ink3);margin-top:7px;min-height:18px}
+.slug-preview b{color:var(--green-dk);font-weight:600}
+.city-row{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:10px}
+.city-chip{border:1.5px solid var(--line2);border-radius:20px;padding:7px 13px;
+  font-size:13px;font-weight:600;color:var(--ink2);cursor:pointer;
+  transition:border-color .12s,background .12s,color .12s;background:var(--card)}
+.city-chip.sel,.city-chip:hover{border-color:var(--green);background:var(--green-bg);color:var(--green-dk)}
+.sel-bar{display:flex;align-items:center;gap:10px;background:var(--card);
+  border:1.5px solid var(--green-mid);border-radius:var(--r-sm);
+  padding:10px 14px;margin-bottom:18px}
+.sel-bar-icon{font-size:20px;flex-shrink:0}
+.sel-bar-text{font-size:13.5px;font-weight:600;color:var(--ink);flex:1;min-width:0;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sel-bar-change{font-size:12px;font-weight:700;color:var(--green);cursor:pointer;
+  flex-shrink:0;padding:4px 8px;border-radius:5px}
+.sel-bar-change:hover{background:var(--green-bg)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  border-radius:var(--r-sm);font-weight:700;font-size:14.5px;padding:13px 24px;
+  transition:.15s;border:2px solid transparent;white-space:nowrap}
+.btn-primary{background:var(--green);color:#fff;border-color:var(--green);width:100%}
+.btn-primary:hover{background:var(--green-dk)}
+.btn-primary:disabled{opacity:.4;cursor:default}
+.btn-ghost{background:transparent;color:var(--ink2);border-color:var(--line2);
+  font-size:13.5px;padding:10px 16px}
+.btn-ghost:hover{border-color:var(--ink3);color:var(--ink)}
+.actions{margin-top:22px;display:flex;flex-direction:column;gap:10px}
+.actions-row{display:flex;gap:10px;align-items:center}
+.ai-overlay{display:none;position:fixed;inset:0;z-index:300;
+  background:linear-gradient(160deg,#051209 0%,#0a2015 50%,#071a10 100%);
+  flex-direction:column;align-items:center;justify-content:center;
+  padding:32px 24px;text-align:center}
+.ai-overlay.open{display:flex}
+.ai-logo{font-family:"Space Grotesk";font-weight:800;font-size:18px;
+  color:rgba(255,255,255,.35);margin-bottom:32px;letter-spacing:-.01em}
+.ai-logo .tld{color:rgba(74,222,128,.5)}
+.ai-spinner-wrap{position:relative;width:72px;height:72px;margin:0 auto 28px}
+.ai-ring{position:absolute;inset:0;border-radius:50%;
+  border:3px solid rgba(74,222,128,.15);border-top-color:#4ade80;
+  animation:spin .9s linear infinite}
+.ai-ring-2{position:absolute;inset:6px;border-radius:50%;
+  border:2px solid rgba(74,222,128,.08);border-bottom-color:rgba(74,222,128,.4);
+  animation:spin 1.4s linear infinite reverse}
+.ai-icon{position:absolute;inset:0;display:flex;align-items:center;
+  justify-content:center;font-size:24px;color:#4ade80}
+.ai-status-wrap{min-height:56px;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:4px}
+.ai-status{font-family:"Space Grotesk";font-size:18px;font-weight:700;
+  color:#fff;opacity:0;transform:translateY(6px);transition:opacity .4s,transform .4s}
+.ai-status.show{opacity:1;transform:none}
+.ai-status-sub{font-size:13px;color:rgba(255,255,255,.45);opacity:0;
+  transition:opacity .4s .15s}
+.ai-status-sub.show{opacity:1}
+.ai-steps-list{margin-top:28px;display:flex;flex-direction:column;gap:8px;
+  width:100%;max-width:320px}
+.ai-step-row{display:flex;align-items:center;gap:10px;font-size:13.5px;
+  font-weight:600;color:rgba(255,255,255,.3);transition:color .3s}
+.ai-step-row.done{color:rgba(74,222,128,.7)}
+.ai-step-row.active{color:rgba(255,255,255,.85)}
+.ai-step-dot{width:18px;height:18px;border-radius:50%;border:2px solid currentColor;
+  flex-shrink:0;display:flex;align-items:center;justify-content:center;
+  font-size:9px;transition:.3s}
+.ai-step-row.done .ai-step-dot{background:#4ade80;border-color:#4ade80;color:#051209}
+.ai-step-row.active .ai-step-dot{border-color:rgba(255,255,255,.6);
+  animation:pulse-dot 1.2s ease-in-out infinite}
+@keyframes pulse-dot{0%,100%{transform:scale(1)}50%{transform:scale(1.2)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ai-success{display:none;flex-direction:column;align-items:center;gap:12px}
+.ai-success.show{display:flex}
+.ai-success-ring{width:64px;height:64px;border-radius:50%;background:#4ade80;
+  display:flex;align-items:center;justify-content:center;font-size:28px;
+  animation:pop .4s cubic-bezier(.34,1.56,.64,1)}
+@keyframes pop{0%{transform:scale(0)}100%{transform:scale(1)}}
+.ai-success h2{font-family:"Space Grotesk";font-size:22px;font-weight:800;
+  color:#fff;text-align:center}
+.ai-success p{font-size:14px;color:rgba(255,255,255,.6);text-align:center;
+  max-width:260px;line-height:1.5}
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <div class="logo">websites<span class="tld">.co.zw</span><span class="logo-flag"><i></i><i></i><i></i></span></div>
+  <a class="bar-back" id="backBtn" href="/dashboard/customer.html">&larr; My sites</a>
+</header>
+<div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+<div class="step-label" id="stepLabel">Step <span id="stepNum">1</span> of 3</div>
+
+<div class="screen active" id="s-industry">
+  <div class="screen-head">
+    <div class="ai-tag">&#10022; AI-Powered Website Builder</div>
+    <h1>What kind of business are you?</h1>
+    <p>Tap once &mdash; AI writes your whole website automatically.</p>
+  </div>
+  <div class="ind-grid" id="industryGrid"></div>
+</div>
+
+<div class="screen" id="s-template">
+  <div class="screen-head">
+    <h1>Choose your look</h1>
+    <p>All designs work on mobile. You can switch any time from the editor.</p>
+  </div>
+  <div class="sel-bar" id="indSelBar">
+    <span class="sel-bar-icon" id="indSelIcon"></span>
+    <span class="sel-bar-text" id="indSelName"></span>
+    <span class="sel-bar-change" onclick="goTo('industry')">Change</span>
+  </div>
+  <div class="brief-card" id="descCard" style="margin-top:0;margin-bottom:16px;padding:14px 16px">
+    <label class="fld-label" for="f-desc">What do you sell or do? <span style="text-transform:none;font-weight:500;color:var(--ink3)">&mdash; optional, helps AI pick better</span></label>
+    <input class="fld-input" id="f-desc" type="text" maxlength="160" style="font-size:14px"
+      placeholder="e.g. wood-fired pizza, kids' coding lessons, plumbing repairs" oninput="onDescInput()">
+  </div>
+  <div class="tpl-grid" id="templateGrid"></div>
+  <div class="actions">
+    <div class="actions-row">
+      <button class="btn btn-ghost" onclick="goTo('industry')">&larr; Back</button>
+      <button class="btn btn-primary" id="btnToDetails" disabled onclick="goTo('details')" style="flex:1">Next &rarr;</button>
+    </div>
+  </div>
+</div>
+
+<div class="screen" id="s-details">
+  <div class="screen-head">
+    <h1>Three things and you&rsquo;re done</h1>
+    <p>Our AI fills in the rest &mdash; your about section, services, and design.</p>
+  </div>
+  <div class="sel-bar" id="tplSelBar">
+    <span class="sel-bar-icon" id="tplSelIcon"></span>
+    <span class="sel-bar-text" id="tplSelName"></span>
+    <span class="sel-bar-change" onclick="goTo('template')">Change</span>
+  </div>
+  <div class="brief-card" style="margin-top:0">
+    <label class="fld-label" for="f-name">Business name</label>
+    <input class="fld-input" id="f-name" type="text" placeholder="e.g. Elite Sports Institute"
+      autocomplete="organization" maxlength="100" oninput="onBriefChange()">
+    <div class="slug-preview" id="slugPreview"></div>
+  </div>
+  <div class="brief-card">
+    <label class="fld-label" for="f-phone">WhatsApp / phone number</label>
+    <input class="fld-input" id="f-phone" type="tel" placeholder="077 123 4567"
+      autocomplete="tel" maxlength="20" oninput="onBriefChange()"
+      style="font-size:18px;letter-spacing:.02em">
+    <div style="font-size:12px;color:var(--ink3);margin-top:6px">
+      &#x2705; Adds a WhatsApp button so customers can message you directly
+    </div>
+  </div>
+  <div class="brief-card">
+    <label class="fld-label">Your city</label>
+    <div class="city-row" id="cityRow"></div>
+    <input class="fld-input" id="f-city" type="text" placeholder="Other city or town"
+      style="font-size:14px" oninput="onCityInput()">
+  </div>
+  <div class="brief-card" id="extrasCard">
+    <label class="fld-label" style="margin-bottom:2px">Tell the AI a bit more <span style="text-transform:none;font-weight:500;color:var(--ink3)">&mdash; optional, but makes your first draft much better</span></label>
+    <div style="font-size:12.5px;color:var(--ink3);margin-bottom:14px">Skip any of these and the AI will fill in something generic instead.</div>
+    <label class="fld-label" for="f-services" style="margin-top:0">What do you offer? <span style="text-transform:none;font-weight:500;color:var(--ink3)">&mdash; one per line</span></label>
+    <textarea class="fld-input" id="f-services" rows="3" style="font-size:14px;resize:vertical;font-weight:500"
+      placeholder="e.g. Haircuts&#10;Braiding&#10;Facials" oninput="onBriefChange()"></textarea>
+    <label class="fld-label" for="f-usp" style="margin-top:14px">What makes you different?</label>
+    <input class="fld-input" id="f-usp" type="text" style="font-size:14px;font-weight:500"
+      placeholder="e.g. 15 years in business" oninput="onBriefChange()">
+    <label class="fld-label" for="f-customers" style="margin-top:14px">Who are your customers?</label>
+    <input class="fld-input" id="f-customers" type="text" style="font-size:14px;font-weight:500"
+      placeholder="e.g. Families in Bulawayo" oninput="onBriefChange()">
+  </div>
+  <div class="actions">
+    <button class="btn btn-primary" id="btnCreate" disabled onclick="onCreateSite()"
+      style="font-size:16px;padding:16px;gap:10px">
+      &#10022; Build my site with AI
+    </button>
+    <div class="actions-row" style="justify-content:center">
+      <button class="btn btn-ghost" onclick="goTo('template')">&larr; Back</button>
+    </div>
+  </div>
+</div>
+
+<div class="ai-overlay" id="aiOverlay">
+  <div class="ai-logo">websites<span class="tld">.co.zw</span></div>
+  <div id="aiSpinnerSection">
+    <div class="ai-spinner-wrap">
+      <div class="ai-ring"></div><div class="ai-ring-2"></div>
+      <div class="ai-icon">&#10022;</div>
+    </div>
+    <div class="ai-status-wrap">
+      <div class="ai-status" id="aiStatus"></div>
+      <div class="ai-status-sub" id="aiStatusSub"></div>
+    </div>
+    <div class="ai-steps-list" id="aiStepsList"></div>
+  </div>
+  <div class="ai-success" id="aiSuccessSection">
+    <div class="ai-success-ring">&#10003;</div>
+    <h2>Your site is ready!</h2>
+    <p id="aiSuccessDesc">Opening your editor now&hellip;</p>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+var API="https://app.sale.co.zw",DASH="/dashboard/customer.html",EDIT="/editor/";
+function tok(){return localStorage.getItem("wcz_token")||"";}
+if(!tok()){location.replace(DASH);}
+var p=new URLSearchParams(location.search);
+var isSwitching=p.get("switch")==="1",fromSiteId=p.get("from")||p.get("site")||"";
+var st={industry:null,template:null,name:"",phone:"",city:"Bulawayo",description:"",services:"",usp:"",customers:""};
+var INDS=[
+  {id:"food",ic:"&#127869;&#65039;",lb:"Food & Dining"},
+  {id:"beauty",ic:"&#128133;",lb:"Beauty & Wellness"},
+  {id:"education",ic:"&#127891;",lb:"School & Sport"},
+  {id:"professional",ic:"&#128188;",lb:"Professional Services"},
+  {id:"property",ic:"&#127960;&#65039;",lb:"Property"},
+  {id:"fashion",ic:"&#128087;",lb:"Fashion & Boutique"},
+  {id:"grocery",ic:"&#128722;",lb:"Grocery & Retail"},
+  {id:"hardware",ic:"&#128295;",lb:"Hardware & Trade"},
+  {id:"hospitality",ic:"&#127976;",lb:"Lodge / B&B / Hotel"},
+  {id:"general",ic:"&#127962;",lb:"General Business"},
+];
+var TPLS=[
+  {id:"grill-house",ic:"&#127830;",nm:"Grill House",ds:"Menu tabs, live hours",bg:"linear-gradient(160deg,#1a0800,#7a2e00)",ct:"#ff6b35",inds:["food"],rec:["food"]},
+  {id:"beauty-salon",ic:"&#128133;",nm:"Beauty Salon",ds:"Price list, before/after slider",bg:"linear-gradient(160deg,#3d0030,#8b005d)",ct:"#e8b4d0",inds:["beauty"],rec:["beauty"]},
+  {id:"school-institution",ic:"&#127891;",nm:"School & Academy",ds:"Stats bar, programmes, events",bg:"linear-gradient(160deg,#0a1628,#1a3a6b)",ct:"#c99a2e",inds:["education"],rec:["education"]},
+  {id:"advisory-firm",ic:"&#9878;&#65039;",nm:"Advisory Firm",ds:"Minimal hero, accordion services",bg:"linear-gradient(160deg,#0d1f33,#1a3a5c)",ct:"#c9a84c",inds:["professional","general"],rec:["professional"]},
+  {id:"property-estate",ic:"&#127960;&#65039;",nm:"Property Estate",ds:"Listings first, sold ticker",bg:"linear-gradient(160deg,#0a1f0a,#1a4a1a)",ct:"#4ade80",inds:["property"],rec:["property"]},
+  {id:"boutique-fashion",ic:"&#128087;",nm:"Boutique Fashion",ds:"Dark editorial, masonry grid",bg:"linear-gradient(160deg,#1a0010,#3d0025)",ct:"#e8c9a0",inds:["fashion"],rec:["fashion"]},
+  {id:"grocery-fmcg",ic:"&#128722;",nm:"Grocery & Spaza",ds:"Category nav, stock badges",bg:"linear-gradient(160deg,#0a2a0a,#1a5a1a)",ct:"#4ade80",inds:["grocery"],rec:["grocery"]},
+  {id:"hardware-store",ic:"&#128295;",nm:"Hardware & Retail",ds:"Dense catalogue, quote builder",bg:"linear-gradient(160deg,#0d1a2e,#1a3366)",ct:"#60a5fa",inds:["hardware","grocery","general"],rec:["hardware"]},
+  {id:"bold-retail",ic:"&#127962;",nm:"General Business",ds:"Split hero, service cards, team",bg:"linear-gradient(160deg,#1a1a2e,#16213e)",ct:"#e94560",inds:["food","beauty","education","professional","property","fashion","grocery","hardware","hospitality","general"],rec:["general"]},
+  {id:"hospitality-inn",ic:"&#127976;",nm:"Lodge / B&B / Hotel",ds:"Room cards, WhatsApp booking, availability badges",bg:"linear-gradient(160deg,#0a1f1a,#1a4a3a)",ct:"#c8a24a",inds:["hospitality"],rec:["hospitality"]},
+];
+var CITIES=["Bulawayo","Harare","Gweru","Mutare","Masvingo","Kwekwe","Kadoma","Vic Falls"];
+// Per-industry example text, shown as placeholders on the optional "tell the
+// AI more" fields in step 3. Purely UI hinting — never sent to the server.
+var IND_HINTS={
+  food:{services:"Wood-fired pizza\nCatering for events\nKids' birthday parties",usp:"e.g. Only wood-fired oven in the area",customers:"e.g. Families, young professionals"},
+  beauty:{services:"Gel manicure\nBraiding\nFacials",usp:"e.g. Trained by international stylists",customers:"e.g. Working women aged 20-45"},
+  education:{services:"After-school coaching\nHoliday clinics\nTalent scouting",usp:"e.g. UEFA-licensed coaches",customers:"e.g. Parents of primary school children"},
+  professional:{services:"Tax returns\nCompany registration\nAudit & assurance",usp:"e.g. 15 years serving Bulawayo SMEs",customers:"e.g. Small business owners"},
+  property:{services:"Property sales\nRentals management\nValuations",usp:"e.g. Largest listings portfolio in the city",customers:"e.g. First-time buyers, landlords"},
+  fashion:{services:"Custom tailoring\nReady-to-wear\nAlterations",usp:"e.g. Locally sourced fabrics",customers:"e.g. Young professionals, brides-to-be"},
+  grocery:{services:"Fresh produce\nBulk grains\nHousehold essentials",usp:"e.g. Lowest prices in the suburb",customers:"e.g. Local households"},
+  hardware:{services:"Building materials\nPlumbing supplies\nTool hire",usp:"e.g. Same-day delivery",customers:"e.g. Contractors, homeowners"},
+  hospitality:{services:"Overnight stays\nConferencing\nWeddings",usp:"e.g. Only lodge with a view of the falls",customers:"e.g. Tourists, corporate travellers"},
+  general:{services:"Consultations\nOn-site visits\nRepairs",usp:"e.g. Same-day response",customers:"e.g. Local homeowners and businesses"}
+};
+var AI_STEPS=[
+  {l:"Understanding your industry",s:"Reading your business type"},
+  {l:"Writing your about section",s:"Crafting your story"},
+  {l:"Building your services",s:"Creating your offerings"},
+  {l:"Adding your contact details",s:"Setting up WhatsApp button"},
+  {l:"Finalising your site",s:"Almost there..."},
+];
+var SCREENS=["industry","template","details"];
+var _statusTimer=null;
+
+(function renderInds(){
+  var g=document.getElementById("industryGrid");
+  g.innerHTML=INDS.map(function(i){
+    return'<div class="ind-card" data-id="'+i.id+'" onclick="pickInd(\''+i.id+'\')">'
+      +'<div class="ic">'+i.ic+'</div><div class="il">'+i.lb+'</div>'
+      +'<div class="ck">&#10003;</div></div>';
+  }).join("");
+})();
+
+window.pickInd=function(id){
+  st.industry=id;
+  st.description="";
+  var df=document.getElementById("f-desc");if(df)df.value="";
+  document.querySelectorAll(".ind-card").forEach(function(c){c.classList.toggle("sel",c.dataset.id===id);});
+  setTimeout(function(){goTo("template");},200);
+};
+
+function buildTplCard(t,isRec){
+  return'<div class="tpl-card" data-id="'+t.id+'" onclick="pickTpl(\''+t.id+'\')">'
+    +'<div class="tpl-prev" style="background:'+t.bg+'">'
+      +'<div class="tpl-nav-bar"><div class="tpl-nav-dot"></div><div class="tpl-nav-dot"></div><div class="tpl-nav-dot"></div></div>'
+      +'<div class="tpl-hero-area"><div class="tpl-h"></div><div class="tpl-p"></div>'
+        +'<div class="tpl-cta" style="background:'+t.ct+'"></div></div>'
+      +(isRec?'<div class="tpl-rec">&#9733; Best match</div>':'')
+      +'<div class="tpl-sel-mark">&#10003;</div>'
+    +'</div>'
+    +'<div class="tpl-body"><div class="tpl-name">'+t.nm+'</div>'
+      +'<div class="tpl-desc">'+t.ds+'</div></div>'
+    +'</div>';
+}
+
+function renderTpls(indId){
+  var relevant=TPLS.filter(function(t){return t.inds.indexOf(indId)>-1;});
+  relevant.sort(function(a,b){return(b.rec.indexOf(indId)>-1?1:0)-(a.rec.indexOf(indId)>-1?1:0);});
+  document.getElementById("templateGrid").innerHTML=relevant.map(function(t){
+    return buildTplCard(t,t.rec.indexOf(indId)>-1);
+  }).join("");
+}
+
+function renderAllTpls(){
+  document.getElementById("templateGrid").innerHTML=TPLS.map(function(t){
+    return buildTplCard(t,false);
+  }).join("");
+}
+
+// ── AI template recommendation ────────────────────────────────────────────
+var _aiRecAbortController=null;
+function fetchAiRecommendation(industryId,industryLabel,description){
+  if(_aiRecAbortController)_aiRecAbortController.abort();
+  _aiRecAbortController=new AbortController();
+  var name=document.getElementById("f-name")?document.getElementById("f-name").value.trim():"";
+  fetch(API+"/api/recommend-template",{
+    method:"POST",
+    headers:{"Content-Type":"application/json","Authorization":"Bearer "+tok()},
+    body:JSON.stringify({industry:industryLabel||industryId,business_name:name||undefined,description:description||undefined}),
+    signal:_aiRecAbortController.signal,
+  }).then(function(r){return r.ok?r.json():null;})
+    .then(function(data){
+      if(!data||!data.template_id)return;
+      reorderTplsWithAiPick(industryId,data.template_id,data.reason);
+    })
+    .catch(function(){});
+}
+
+var _descDebounce=null;
+window.onDescInput=function(){
+  st.description=document.getElementById("f-desc").value.trim();
+  clearTimeout(_descDebounce);
+  if(!st.industry)return;
+  _descDebounce=setTimeout(function(){
+    var ind=INDS.find(function(i){return i.id===st.industry;});
+    fetchAiRecommendation(st.industry,ind?ind.lb:"",st.description);
+  },600);
+};
+
+function reorderTplsWithAiPick(indId,pickedId,reason){
+  var relevant=TPLS.filter(function(t){return t.inds.indexOf(indId)>-1;});
+  var has=relevant.some(function(t){return t.id===pickedId;});
+  if(!has)return;
+  relevant.sort(function(a,b){
+    if(a.id===pickedId)return -1;
+    if(b.id===pickedId)return 1;
+    return(b.rec.indexOf(indId)>-1?1:0)-(a.rec.indexOf(indId)>-1?1:0);
+  });
+  document.getElementById("templateGrid").innerHTML=relevant.map(function(t){
+    return buildTplCard(t,t.id===pickedId);
+  }).join("");
+  if(reason){
+    var card=document.querySelector('.tpl-card[data-id="'+pickedId+'"] .tpl-rec');
+    if(card)card.textContent="\u2605 "+reason;
+  }
+}
+
+window.pickTpl=function(id){
+  st.template=id;
+  document.querySelectorAll(".tpl-card").forEach(function(c){c.classList.toggle("sel",c.dataset.id===id);});
+  document.getElementById("btnToDetails").disabled=false;
+  if(!isSwitching) setTimeout(function(){goTo("details");},200);
+};
+
+(function renderCities(){
+  var row=document.getElementById("cityRow");
+  row.innerHTML=CITIES.map(function(c){
+    return'<div class="city-chip'+(c==="Bulawayo"?" sel":"")+'" onclick="pickCity(\''+c+'\')" data-city="'+c+'">'+c+'</div>';
+  }).join("");
+  document.getElementById("f-city").value="Bulawayo";
+})();
+
+window.pickCity=function(city){
+  st.city=city;
+  document.querySelectorAll(".city-chip").forEach(function(c){c.classList.toggle("sel",c.dataset.city===city);});
+  document.getElementById("f-city").value=city;
+  onBriefChange();
+};
+window.onCityInput=function(){
+  var v=document.getElementById("f-city").value.trim();
+  if(v)st.city=v;
+  document.querySelectorAll(".city-chip").forEach(function(c){c.classList.remove("sel");});
+};
+
+window.goTo=function(id){
+  var idx=SCREENS.indexOf(id);
+  SCREENS.forEach(function(s){document.getElementById("s-"+s).classList.toggle("active",s===id);});
+  document.getElementById("progressBar").style.width=((idx+1)/SCREENS.length*100)+"%";
+  document.getElementById("stepNum").textContent=idx+1;
+  if(id==="template"&&st.industry&&!isSwitching){
+    var ind=INDS.find(function(i){return i.id===st.industry;});
+    document.getElementById("indSelIcon").innerHTML=ind?ind.ic:"";
+    document.getElementById("indSelName").textContent=ind?ind.lb:"";
+    document.getElementById("f-desc").value=st.description||"";
+    renderTpls(st.industry);
+    fetchAiRecommendation(st.industry, ind ? ind.lb : "", st.description);
+  }
+  if(id==="details"&&st.template){
+    var tpl=TPLS.find(function(t){return t.id===st.template;});
+    document.getElementById("tplSelIcon").innerHTML=tpl?tpl.ic:"";
+    document.getElementById("tplSelName").textContent=tpl?tpl.nm:"";
+    var hints=IND_HINTS[st.industry]||IND_HINTS.general;
+    var svcEl=document.getElementById("f-services"),uspEl=document.getElementById("f-usp"),custEl=document.getElementById("f-customers");
+    if(svcEl)svcEl.placeholder=hints.services;
+    if(uspEl)uspEl.placeholder=hints.usp;
+    if(custEl)custEl.placeholder=hints.customers;
+    setTimeout(function(){document.getElementById("f-name").focus();},300);
+  }
+  var bb=document.getElementById("backBtn");
+  bb.textContent=idx>0?"Back":"My sites";
+  bb.href=idx>0?"#":DASH;
+  bb.onclick=idx>0?function(e){e.preventDefault();goTo(SCREENS[idx-1]);}:null;
+  window.scrollTo({top:0,behavior:"smooth"});
+};
+
+window.onBriefChange=function(){
+  st.name=document.getElementById("f-name").value.trim();
+  st.phone=document.getElementById("f-phone").value.trim();
+  var ci=document.getElementById("f-city").value.trim();
+  if(ci)st.city=ci;
+  var svcEl=document.getElementById("f-services"),uspEl=document.getElementById("f-usp"),custEl=document.getElementById("f-customers");
+  if(svcEl)st.services=svcEl.value;
+  if(uspEl)st.usp=uspEl.value.trim();
+  if(custEl)st.customers=custEl.value.trim();
+  document.getElementById("slugPreview").innerHTML=st.name
+    ?'Your site: <b>'+esc(slugify(st.name))+'.sale.co.zw</b>':"";
+  document.getElementById("btnCreate").disabled=st.name.length<2;
+};
+
+document.getElementById("f-name").addEventListener("keydown",function(e){if(e.key==="Enter")document.getElementById("f-phone").focus();});
+document.getElementById("f-phone").addEventListener("keydown",function(e){if(e.key==="Enter"&&!document.getElementById("btnCreate").disabled)onCreateSite();});
+
+function buildStepsList(){
+  document.getElementById("aiStepsList").innerHTML=AI_STEPS.map(function(s,i){
+    return'<div class="ai-step-row" id="aistep-'+i+'">'
+      +'<div class="ai-step-dot" id="aistep-dot-'+i+'">&middot;</div>'
+      +'<span>'+s.l+'</span></div>';
+  }).join("");
+}
+function setAIStep(idx){
+  AI_STEPS.forEach(function(_,i){
+    var r=document.getElementById("aistep-"+i);if(!r)return;
+    r.classList.remove("active","done");
+    if(i<idx)r.classList.add("done");
+    if(i===idx)r.classList.add("active");
+    var d=document.getElementById("aistep-dot-"+i);
+    if(d)d.innerHTML=i<idx?"&#10003;":(i===idx?"&#9673;":" &middot;");
+  });
+  var s=AI_STEPS[idx]||AI_STEPS[AI_STEPS.length-1];
+  setStatus(s.l,s.s);
+}
+function setStatus(main,sub){
+  var ms=document.getElementById("aiStatus"),ss=document.getElementById("aiStatusSub");
+  ms.classList.remove("show");ss.classList.remove("show");
+  clearTimeout(_statusTimer);
+  _statusTimer=setTimeout(function(){ms.textContent=main;ss.textContent=sub||"";ms.classList.add("show");ss.classList.add("show");},120);
+}
+function showSuccess(nm){
+  document.getElementById("aiSpinnerSection").style.display="none";
+  var sec=document.getElementById("aiSuccessSection");sec.classList.add("show");
+  document.getElementById("aiSuccessDesc").textContent=(nm?nm+" is ":"Your site is ")+"ready - opening your editor now...";
+}
+
+window.onCreateSite=async function(){
+  if(st.name.length<2&&!isSwitching)return;
+  document.getElementById("aiOverlay").classList.add("open");
+  buildStepsList();
+
+  if(isSwitching&&fromSiteId){
+    setStatus("Switching your template...","Keeping all your content");
+    try{
+      var sr=await fetch(API+"/api/sites/"+encodeURIComponent(fromSiteId)+"/template",{
+        method:"PUT",headers:{"Content-Type":"application/json","Authorization":"Bearer "+tok()},
+        body:JSON.stringify({template_id:st.template})
+      });
+      if(!sr.ok){location.replace(DASH);return;}
+      showSuccess("");
+      setTimeout(function(){location.href=EDIT+"?site="+encodeURIComponent(fromSiteId);},1500);
+    }catch(e){location.replace(DASH);}
+    return;
+  }
+
+  setAIStep(0);
+  var siteId=null;
+  try{
+    var cr=await fetch(API+"/api/sites",{
+      method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+tok()},
+      body:JSON.stringify({site_name:st.name,template_id:st.template})
+    });
+    var cd={};try{cd=await cr.json();}catch(e){}
+    if(cr.status===401){location.replace(DASH);return;}
+    // NOTE (v2): the auth Worker no longer enforces a one-site-per-account
+    // limit (removed in auth-worker.js v5.4), so the old 403 "one_site_limit"
+    // recovery branch that silently redirected into an existing site has
+    // been removed. A failed create now just falls through to the normal
+    // "something went wrong" path below.
+    if(!cr.ok||!cd.site){location.replace(DASH);return;}
+    siteId=cd.site.id;
+  }catch(e){location.replace(DASH);return;}
+
+  setAIStep(1);
+  var indObj=INDS.find(function(i){return i.id===st.industry;})||{lb:""};
+  var phone=normPhone(st.phone);
+  var servicesList=String(st.services||"").split("\n").map(function(s){return s.trim();}).filter(Boolean);
+  var brief={business_name:st.name,industry:indObj.lb,city:st.city||"Bulawayo",
+    description:st.description||undefined,
+    target_customers:st.customers||undefined,
+    unique_selling_point:st.usp||undefined,
+    services:servicesList.length?servicesList:undefined,
+    phone:phone,contact:{phone:phone,whatsapp:phone},
+    socials:{whatsapp:phone?"https://wa.me/"+phone:""}};
+
+  var stepIdx=1,stepTimer=null;
+  function bumpStep(){stepIdx++;if(stepIdx<=3)setAIStep(stepIdx);if(stepIdx<3)stepTimer=setTimeout(bumpStep,3000);}
+  stepTimer=setTimeout(bumpStep,2800);
+
+  try{
+    await fetch(API+"/api/sites/"+encodeURIComponent(siteId)+"/generate",{
+      method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+tok()},
+      body:JSON.stringify(brief)
+    });
+  }catch(e){}
+  clearTimeout(stepTimer);
+  setAIStep(4);
+
+  // Patch phone/city into content regardless of AI result
+  try{
+    var siteR=await fetch(API+"/api/sites/"+encodeURIComponent(siteId),{headers:{"Authorization":"Bearer "+tok()}});
+    if(siteR.ok){
+      var sd=await siteR.json();
+      var raw={};
+      try{raw=typeof(sd.site||{}).content==="string"?JSON.parse(sd.site.content):(sd.site.content||{});}catch(e){}
+      var inner=raw.content||{};
+      inner.contact=Object.assign({},inner.contact||{},{phone:phone||st.phone,whatsapp:phone||st.phone});
+      inner.location=st.city;
+      if(!inner.business_name)inner.business_name=st.name;
+      raw.content=inner;
+      await fetch(API+"/api/sites/"+encodeURIComponent(siteId),{
+        method:"PUT",headers:{"Content-Type":"application/json","Authorization":"Bearer "+tok()},
+        body:JSON.stringify({site_name:st.name,template_id:st.template,content:raw})
+      });
+    }
+  }catch(e){}
+
+  try{sessionStorage.setItem("wcz_industry",st.industry||"");}catch(e){}
+  showSuccess(st.name);
+  setTimeout(function(){location.href=EDIT+"?site="+encodeURIComponent(siteId)+"&new=1";},1600);
+};
+
+if(isSwitching&&fromSiteId){
+  document.getElementById("stepLabel").style.display="none";
+  document.getElementById("progressBar").parentElement.style.display="none";
+  document.getElementById("indSelBar").style.display="none";
+  document.getElementById("descCard").style.display="none";
+  st.industry="general";
+  renderAllTpls();
+  goTo("template");
+  var btn=document.getElementById("btnToDetails");
+  btn.textContent="Switch template";
+  btn.onclick=function(){if(!st.template)return;st.name="switch";onCreateSite();};
+  document.getElementById("s-details").style.display="none";
+}
+
+function slugify(s){return String(s||"").toLowerCase().trim().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"").slice(0,40)||"my-site";}
+function esc(s){return String(s||"").replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+function normPhone(raw){
+  if(!raw)return"";
+  var p=String(raw).replace(/[^\d]/g,"");
+  if(!p||p.length<7)return raw;
+  if(p.startsWith("263")&&p.length>=12)return p;
+  if(p.startsWith("0")&&p.length>=10)return"263"+p.slice(1);
+  if(p.length===9&&(p.startsWith("7")||p.startsWith("8")))return"263"+p;
+  return p;
+}
+})();
+</script>
+</body>
+</html>

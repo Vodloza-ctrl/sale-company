@@ -1,0 +1,808 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>sale.co.zw — Your sites</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --surface:#eef0f3; --card:#ffffff; --line:#e3e5ea;
+    --ink:#1a1b22; --ink-soft:#4a4d59; --muted:#868a96;
+    --gold:#a87d1a; --gold-strong:#876312; --gold-soft:#f4ecd6;
+    --live:#1d7a4d; --live-bg:#e3f2ea;
+    --draft:#6a6777; --draft-bg:#ececef;
+    --grace:#a8741a; --grace-bg:#f7edd7;
+    --suspend:#b23b30; --suspend-bg:#f7e3e0;
+    --pay:#2f6fb0; --pay-bg:#e4eef8;
+    --demo:#6d28d9; --demo-bg:#ede9fe;
+    --red:#c0392b; --red-bg:#fde8e6;
+    --radius:14px; --r-sm:9px;
+    --shadow:0 1px 2px rgba(20,22,30,.04), 0 8px 24px rgba(20,22,30,.05);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    background:var(--surface); color:var(--ink);
+    font-family:"Hanken Grotesk",system-ui,sans-serif; font-size:15px; line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit}
+  button{font-family:inherit;cursor:pointer}
+  :focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:6px}
+
+  /* ── top bar ── */
+  .bar{position:sticky;top:0;z-index:5;background:var(--card);border-bottom:1px solid var(--line)}
+  .bar-in{max-width:980px;margin:0 auto;padding:16px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .logo{font-family:"Space Grotesk";font-weight:700;font-size:19px;letter-spacing:-.01em}
+  .logo .tld{color:var(--gold)}
+  .who{display:flex;align-items:center;gap:14px;font-size:14px;color:var(--ink-soft);min-width:0}
+  .who .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:34vw}
+  .linkbtn{background:none;border:none;color:var(--ink-soft);font-size:14px;padding:6px 4px;text-decoration:underline;text-underline-offset:3px}
+  .linkbtn:hover{color:var(--ink)}
+
+  /* ── layout ── */
+  .wrap{max-width:980px;margin:0 auto;padding:34px 22px 70px}
+  .head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:22px;flex-wrap:wrap}
+  .head h1{font-family:"Space Grotesk";font-weight:600;font-size:27px;letter-spacing:-.02em;margin:0}
+  .head .sub{color:var(--muted);font-size:14px;margin-top:3px}
+  .btn{border:1px solid transparent;border-radius:var(--r-sm);padding:10px 16px;font-weight:600;font-size:14px;line-height:1;display:inline-flex;align-items:center;gap:8px;transition:background .15s,border-color .15s,color .15s}
+  .btn-gold{background:var(--gold);color:#fff}
+  .btn-gold:hover{background:var(--gold-strong)}
+  .btn-ghost{background:var(--card);border-color:var(--line);color:var(--ink)}
+  .btn-ghost:hover{border-color:var(--ink-soft)}
+  .btn-quiet{background:transparent;border-color:transparent;color:var(--ink-soft);padding:10px 10px}
+  .btn-quiet:hover{color:var(--ink)}
+  .btn-danger{background:transparent;border-color:transparent;color:var(--red);padding:10px 10px}
+  .btn-danger:hover{color:var(--red);background:var(--red-bg);border-radius:var(--r-sm)}
+
+  /* ── site grid ── */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px 18px 16px;box-shadow:var(--shadow);display:flex;flex-direction:column}
+  .card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+  .card h2{font-family:"Space Grotesk";font-weight:600;font-size:18px;letter-spacing:-.01em;margin:0 0 2px}
+  .pill{font-size:11.5px;font-weight:600;padding:4px 9px;border-radius:999px;white-space:nowrap;letter-spacing:.01em}
+  .t-live   {color:var(--live);   background:var(--live-bg)}
+  .t-draft  {color:var(--draft);  background:var(--draft-bg)}
+  .t-grace  {color:var(--grace);  background:var(--grace-bg)}
+  .t-suspend{color:var(--suspend);background:var(--suspend-bg)}
+  .t-pay    {color:var(--pay);    background:var(--pay-bg)}
+  .t-demo   {color:var(--demo);   background:var(--demo-bg)}
+  .meaning{color:var(--ink-soft);font-size:13.5px;margin:9px 0 0;min-height:38px}
+  .url{margin:13px 0 0;font-size:13px}
+  .url a{color:var(--gold-strong);text-decoration:none;font-weight:600;word-break:break-all}
+  .url a:hover{text-decoration:underline}
+  .url .off{color:var(--muted);font-weight:500}
+  .meta{margin-top:10px;display:flex;gap:14px;flex-wrap:wrap;color:var(--muted);font-size:12.5px}
+  .meta .k{color:var(--ink-soft);font-weight:600}
+  .actions{margin-top:16px;padding-top:14px;border-top:1px solid var(--line);display:flex;gap:8px;flex-wrap:wrap}
+  .actions .btn{padding:8px 13px;font-size:13px}
+
+  /* ── empty state ── */
+  .empty{background:var(--card);border:1px dashed var(--line);border-radius:var(--radius);padding:46px 26px;text-align:center}
+  .empty h2{font-family:"Space Grotesk";font-weight:600;font-size:20px;margin:0 0 6px}
+  .empty p{color:var(--muted);margin:0 0 18px}
+
+  /* ── login ── */
+  .auth{min-height:100dvh;display:grid;place-items:center;padding:24px}
+  .auth-card{background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);width:100%;max-width:392px;padding:30px 28px}
+  .auth .logo{font-size:22px;display:block;margin-bottom:4px}
+  .auth h1{font-family:"Space Grotesk";font-weight:600;font-size:20px;letter-spacing:-.01em;margin:14px 0 4px}
+  .auth p.lead{color:var(--muted);font-size:14px;margin:0 0 20px}
+  label.fld{display:block;font-size:13px;font-weight:600;color:var(--ink-soft);margin:14px 0 6px}
+  .input{width:100%;border:1px solid var(--line);border-radius:var(--r-sm);padding:12px 13px;font-size:15px;font-family:inherit;color:var(--ink);background:#fff}
+  .input:focus{outline:none;border-color:var(--gold)}
+  .code-input{text-align:center;font-family:"Space Grotesk";font-size:26px;letter-spacing:.5em;font-weight:600;padding-left:.5em}
+  .seg{display:flex;border:1px solid var(--line);border-radius:var(--r-sm);overflow:hidden;margin-top:4px}
+  .seg button{flex:1;border:none;background:#fff;padding:9px 8px;font-size:13.5px;font-weight:600;color:var(--ink-soft)}
+  .seg button[aria-pressed="true"]{background:var(--ink);color:#fff}
+  .auth .btn-gold{width:100%;justify-content:center;padding:13px;margin-top:18px;font-size:15px}
+  .row-links{display:flex;justify-content:space-between;margin-top:14px}
+  .msg{font-size:13px;margin-top:12px;padding:9px 11px;border-radius:8px;display:none}
+  .msg.err{display:block;color:var(--suspend);background:var(--suspend-bg)}
+  .msg.ok {display:block;color:var(--live);   background:var(--live-bg)}
+  .sent-to{font-size:13.5px;color:var(--ink-soft);margin:0 0 4px}
+  .sent-to b{color:var(--ink)}
+
+  .ribbon{background:var(--gold-soft);color:var(--gold-strong);text-align:center;font-size:12.5px;font-weight:600;padding:7px}
+  .skeleton{height:150px;border-radius:var(--radius);background:linear-gradient(90deg,#fff,#f3f4f6,#fff);background-size:200% 100%;animation:sh 1.2s infinite;border:1px solid var(--line)}
+
+  .logo-flag{display:inline-flex;flex-direction:column;gap:2px;margin-left:6px;vertical-align:middle}
+  .logo-flag i{display:block;width:4px;height:4px;border-radius:50%;list-style:none}
+  .logo-flag i:nth-child(1){background:#0F5B47}
+  .logo-flag i:nth-child(2){background:#a87d1a}
+  .logo-flag i:nth-child(3){background:#c0392b}
+  .btn-refresh{background:none;border:1px solid var(--line);border-radius:var(--r-sm);padding:8px 13px;font-size:13px;font-weight:600;color:var(--muted);display:inline-flex;align-items:center;gap:6px}
+  .btn-refresh:hover{border-color:var(--ink-soft);color:var(--ink)}
+
+  @keyframes sh{0%{background-position:200% 0}100%{background-position:-200% 0}}
+  @media(prefers-reduced-motion:reduce){.skeleton{animation:none}*{transition:none!important}}
+  @media(max-width:520px){.head h1{font-size:23px}.who .nm{max-width:26vw}}
+
+  /* ── delete confirmation modal ── */
+  .del-overlay{display:none;position:fixed;inset:0;background:rgba(13,15,20,.6);z-index:300;align-items:center;justify-content:center;padding:20px}
+  .del-overlay.open{display:flex}
+  .del-modal{background:#fff;border-radius:16px;max-width:420px;width:100%;padding:28px 24px 24px;box-shadow:0 8px 40px rgba(0,0,0,.2)}
+  .del-modal h2{font-family:"Space Grotesk";font-size:20px;margin:0 0 8px;color:var(--red)}
+  .del-modal p{color:var(--ink-soft);font-size:14px;line-height:1.6;margin:0 0 20px}
+  .del-modal .del-warning{background:var(--red-bg);border-radius:8px;padding:12px 14px;font-size:13px;color:var(--red);margin-bottom:18px}
+  .del-modal .del-actions{display:flex;gap:10px;justify-content:flex-end}
+  .del-modal .del-actions .btn{padding:10px 20px}
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<!-- ─── DELETE CONFIRMATION MODAL ─────────────────────────────────────────── -->
+<div class="del-overlay" id="delOverlay">
+  <div class="del-modal">
+    <h2>🗑️ Delete site?</h2>
+    <p>This will permanently delete <strong id="delSiteName"></strong> and all its content.</p>
+    <div class="del-warning">
+      ⚠️ This action <strong>cannot be undone</strong>. All pages, images, products, and settings will be lost forever.
+    </div>
+    <div class="del-actions">
+      <button class="btn btn-ghost" onclick="closeDeleteModal()">Cancel</button>
+      <button class="btn" id="delConfirmBtn" style="background:var(--red);color:#fff;border-color:var(--red)">Delete permanently</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  // ── API endpoints ──────────────────────────────────────────────────────────
+  var AUTH = "https://app.sale.co.zw/auth";
+  var API  = "https://app.sale.co.zw/api";
+  var PAGES = "https://www.sale.co.zw";
+  var APP   = "https://app.sale.co.zw";
+  var NEW   = PAGES + "/new/";
+  var now  = Math.floor(Date.now()/1000);
+  var DEMO = false;
+  var state = { owner:null, channel:"whatsapp", phone:"", step:"phone" };
+  var app   = document.getElementById("app");
+
+  // ── Delete state ──────────────────────────────────────────────────────────
+  var deleteTarget = null;
+
+  /* ---------- helpers ---------- */
+  function el(html){ var t=document.createElement("template"); t.innerHTML=html.trim(); return t.content.firstChild; }
+  function esc(s){ return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];}); }
+  function daysLeft(s){ return s.expires_at ? Math.ceil((s.expires_at-now)/86400) : null; }
+  function publicUrl(s){
+    if (s.custom_domain && s.custom_domain_status==="active") return "https://"+s.custom_domain;
+    if (s.draft_subdomain) return "https://"+s.draft_subdomain+".sale.co.zw";
+    return null;
+  }
+  function previewUrl(s){ return APP+"/preview/"+(s.draft_subdomain||s.id); }
+  function editorUrl(s) { return PAGES+"/editor/?site="+s.id; }
+  function switchTemplateUrl(s){ return NEW+"?switch=1&site="+encodeURIComponent(s.id); }
+
+  window.createNewSite = function(){ location.href = NEW; };
+  window.switchTemplate = function(siteId){ location.href = NEW+"?switch=1&site="+encodeURIComponent(siteId); };
+
+  // ── DELETE SITE ───────────────────────────────────────────────────────────
+  window.openDeleteModal = function(siteId, siteName) {
+    deleteTarget = { id: siteId, name: siteName };
+    document.getElementById("delSiteName").textContent = siteName || "Untitled site";
+    document.getElementById("delOverlay").classList.add("open");
+  };
+
+  window.closeDeleteModal = function() {
+    document.getElementById("delOverlay").classList.remove("open");
+    deleteTarget = null;
+  };
+
+  window.confirmDelete = async function() {
+    if (!deleteTarget) return;
+    var siteId = deleteTarget.id;
+    var siteName = deleteTarget.name;
+
+    var btn = document.getElementById("delConfirmBtn");
+    btn.disabled = true;
+    btn.textContent = "Deleting…";
+
+    try {
+      var token = localStorage.getItem("wcz_token");
+      var r = await fetch(API + "/sites/" + encodeURIComponent(siteId), {
+        method: "DELETE",
+        headers: { "Authorization": "Bearer " + (token || "") }
+      });
+      var data = {}; try { data = await r.json(); } catch(e) {}
+
+      if (r.ok) {
+        closeDeleteModal();
+        // Show a brief toast/notification
+        var sub = document.getElementById("subcount");
+        if (sub) sub.textContent = "Deleting…";
+        doRefresh();
+      } else {
+        alert(data.message || data.error || "Couldn't delete site. Try again.");
+        btn.disabled = false;
+        btn.textContent = "Delete permanently";
+      }
+    } catch(e) {
+      alert("Network error. Check your connection and try again.");
+      btn.disabled = false;
+      btn.textContent = "Delete permanently";
+    }
+  };
+
+  // Wire up delete confirm button
+  document.addEventListener("DOMContentLoaded", function() {
+    var btn = document.getElementById("delConfirmBtn");
+    if (btn) btn.addEventListener("click", window.confirmDelete);
+  });
+
+  // Close modal on overlay click
+  document.getElementById("delOverlay").addEventListener("click", function(e) {
+    if (e.target === this) closeDeleteModal();
+  });
+
+  function statusInfo(s){
+    if (s._is_demo) return {label:"Demo", tone:"demo", meaning:"This is a demo site used to showcase this template."};
+    var d = daysLeft(s);
+    switch(s.status){
+      case "published":
+        if (d!=null && d<=14) return {label:"Renewal due soon", tone:"grace", meaning:"Live now — "+d+" day"+(d===1?"":"s")+" left. Renew to stay online."};
+        return {label:"Live", tone:"live", meaning:"Anyone can visit your site."};
+      case "draft":           return {label:"Draft",           tone:"draft",   meaning:"Only you can see this. Publish to put it online."};
+      case "pending_payment": return {label:"Awaiting payment",tone:"pay",     meaning:"Finish payment to publish your site."};
+      case "grace":           return {label:"Renewal due",     tone:"grace",   meaning:"Your subscription lapsed — renew to stay online."};
+      case "suspended":       return {label:"Offline",         tone:"suspend", meaning:"Your site is offline. Renew to bring it back."};
+      default: return {label:s.status||"—", tone:"draft", meaning:""};
+    }
+  }
+
+  var errText = {
+    invalid_phone:"Enter a valid phone number.",
+    invalid_input:"Check the number and code, then try again.",
+    too_many_requests:"Too many requests. Wait a little and try again.",
+    too_many_attempts:"Too many wrong codes. Request a new one.",
+    invalid_code:"That code didn't match. Try again.",
+    code_expired_or_missing:"That code expired. Request a new one.",
+    email_required:"Enter your email to receive the code.",
+    email_not_on_file:"No email on file for this number — use WhatsApp, or add an email after signing in.",
+    otp_delivery_failed:"Couldn't send the code. Try the other channel."
+  };
+  function friendly(code){ return errText[code] || "Something went wrong. Try again."; }
+
+  async function api(path, opts){
+    var token = localStorage.getItem("wcz_token");
+    var headers = {"Content-Type":"application/json"};
+    if (token) headers["Authorization"] = "Bearer " + token;
+    var r = await fetch(path, Object.assign({ headers: headers }, opts||{}));
+    var data = {}; try{ data = await r.json(); }catch(e){}
+    return { ok:r.ok, status:r.status, data:data };
+  }
+
+  /* ---------- boot ---------- */
+  (async function init(){
+    try {
+      var r = await api(AUTH+"/me", { method:"GET" });
+      if (r.data && r.data.authenticated){ state.owner = r.data.owner; return renderDashboard(); }
+      localStorage.removeItem("wcz_token");
+      return renderLogin();
+    } catch(e){
+      DEMO = true; state.owner = { name:"Elite Sports", phone:"263772123456" };
+      return renderDashboard();
+    }
+  })();
+
+  /* ---------- login ---------- */
+  function renderLogin(){
+    state.step = "phone";
+    app.innerHTML = "";
+    var card = el(
+      '<div class="auth"><div class="auth-card">'+
+        '<span class="logo">websites<span class="tld">.co.zw</span><span class="logo-flag"><i></i><i></i><i></i></span></span>'+
+        '<h1>Manage your websites</h1>'+
+        '<p class="lead">Sign in with your phone number to see and update your sites.</p>'+
+        '<div id="step"></div>'+
+        '<div class="msg" id="msg"></div>'+
+      '</div></div>');
+    app.appendChild(card);
+    renderPhoneStep();
+  }
+
+  function setMsg(text, kind){
+    var m = document.getElementById("msg");
+    if (!m) return;
+    m.className = "msg "+(kind||"err"); m.textContent = text || "";
+    if (!text) m.className = "msg";
+  }
+
+  function renderPhoneStep(){
+    var wrap = document.getElementById("step");
+    wrap.innerHTML =
+      '<label class="fld" for="phone">Phone number</label>'+
+      '<input class="input" id="phone" inputmode="tel" autocomplete="tel" placeholder="077 123 4567" value="'+esc(state.phone)+'">'+
+      '<label class="fld">Send the code by</label>'+
+      '<div class="seg" role="group" aria-label="Delivery channel">'+
+        '<button type="button" data-ch="whatsapp" aria-pressed="'+(state.channel==="whatsapp")+'">WhatsApp</button>'+
+        '<button type="button" data-ch="email"    aria-pressed="'+(state.channel==="email")+'">Email</button>'+
+      '</div>'+
+      '<div id="email-wrap" style="'+(state.channel==="email"?"":"display:none")+'">'+
+        '<label class="fld" for="email">Email</label>'+
+        '<input class="input" id="email" inputmode="email" autocomplete="email" placeholder="you@example.com">'+
+      '</div>'+
+      '<button class="btn btn-gold" id="send">Send code</button>'+
+      '<label style="display:flex;align-items:flex-start;gap:10px;margin-top:14px;cursor:pointer"><input type="checkbox" id="agreeTerms" style="width:17px;height:17px;margin-top:2px;flex-shrink:0;accent-color:var(--gold)"><span style="font-size:13px;color:var(--ink-soft);line-height:1.5">I agree to the <a href="https://sale.co.zw/terms" target="_blank" style="color:var(--gold);font-weight:600">Terms of Service</a> and Acceptable Use Policy</span></label>';
+
+    wrap.querySelectorAll(".seg button").forEach(function(b){
+      b.addEventListener("click", function(){
+        state.channel = b.getAttribute("data-ch");
+        wrap.querySelectorAll(".seg button").forEach(function(x){ x.setAttribute("aria-pressed", x===b); });
+        document.getElementById("email-wrap").style.display = state.channel==="email" ? "" : "none";
+      });
+    });
+    var send = document.getElementById("send");
+    send.addEventListener("click", requestCode);
+    document.getElementById("phone").addEventListener("keydown", function(e){ if(e.key==="Enter") requestCode(); });
+  }
+
+  async function requestCode(){
+    setMsg("");
+    var agreeBox = document.getElementById("agreeTerms");
+    if (agreeBox && !agreeBox.checked) { return setMsg("Please agree to the Terms of Service to continue."); }
+    state.phone = document.getElementById("phone").value.trim();
+    var email = (document.getElementById("email")||{}).value;
+    if (!state.phone){ return setMsg("Enter your phone number."); }
+    var btn = document.getElementById("send"); btn.disabled = true; btn.textContent = "Sending…";
+    var body = { phone: state.phone, channel: state.channel };
+    if (state.channel==="email" && email) body.email = email.trim();
+    try {
+      var r = await api(AUTH+"/request-otp", { method:"POST", body:JSON.stringify(body) });
+      if (!r.ok){ btn.disabled=false; btn.textContent="Send code"; return setMsg(friendly(r.data.error)); }
+      state.devCode = r.data.dev_code || null;
+      renderCodeStep();
+    } catch(e){ btn.disabled=false; btn.textContent="Send code"; setMsg("Network error. Check your connection."); }
+  }
+
+  function renderCodeStep(){
+    state.step = "code";
+    var wrap = document.getElementById("step");
+    var where = state.channel==="email" ? "your email" : "WhatsApp";
+    wrap.innerHTML =
+      '<p class="sent-to">We sent a 6-digit code to <b>'+esc(where)+'</b>.</p>'+
+      '<label class="fld" for="code">Enter code</label>'+
+      '<input class="input code-input" id="code" inputmode="numeric" maxlength="6" autocomplete="one-time-code" placeholder="••••••">'+
+      (state.devCode ? '<p class="sent-to" style="margin-top:8px">Test code: <b>'+esc(state.devCode)+'</b></p>' : '')+
+      '<button class="btn btn-gold" id="verify">Verify &amp; sign in</button>'+
+      '<div class="row-links">'+
+        '<button class="linkbtn" id="resend">Resend code</button>'+
+        '<button class="linkbtn" id="back">Use another number</button>'+
+      '</div>';
+    var code = document.getElementById("code"); code.focus();
+    document.getElementById("verify").addEventListener("click", verifyCode);
+    code.addEventListener("keydown", function(e){ if(e.key==="Enter") verifyCode(); });
+    document.getElementById("resend").addEventListener("click", function(){ setMsg(""); requestCode(); });
+    document.getElementById("back").addEventListener("click", function(){ setMsg(""); renderPhoneStep(); });
+  }
+
+  async function verifyCode(){
+    setMsg("");
+    var code = document.getElementById("code").value.replace(/\D/g,"");
+    if (code.length<4){ return setMsg("Enter the code we sent you."); }
+    var btn = document.getElementById("verify"); btn.disabled=true; btn.textContent="Signing in…";
+    var body = { phone: state.phone, code: code };
+    try {
+      var r = await api(AUTH+"/verify-otp", { method:"POST", body:JSON.stringify(body) });
+      if (!r.ok){ btn.disabled=false; btn.textContent="Verify & sign in"; return setMsg(friendly(r.data.error)); }
+      if (r.data.token) localStorage.setItem("wcz_token", r.data.token);
+      state.owner = r.data.owner;
+      renderDashboard();
+    } catch(e){ btn.disabled=false; btn.textContent="Verify & sign in"; setMsg("Network error. Try again."); }
+  }
+
+  /* ---------- dashboard ---------- */
+  async function renderDashboard(){
+    app.innerHTML =
+      (DEMO ? '<div class="ribbon">Preview — showing sample data</div>' : '')+
+      '<div class="bar"><div class="bar-in">'+
+        '<span class="logo">websites<span class="tld">.co.zw</span><span class="logo-flag"><i></i><i></i><i></i></span></span>'+
+        '<div class="who"><span class="nm">'+esc(displayName())+'</span>'+
+          '<button class="linkbtn" id="signout">Sign out</button></div>'+
+      '</div></div>'+
+      '<div class="wrap">'+
+        '<div class="head"><div><h1>Your sites</h1><div class="sub" id="subcount">Loading…</div></div>'+
+          '<div style="display:flex;gap:8px"><button class="btn-refresh" onclick="doRefresh()">↺ Refresh</button><button class="btn btn-gold" onclick="createNewSite()">+ New site</button></div></div>'+
+        '<div class="grid" id="grid">'+
+          '<div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>'+
+        '</div>'+
+      '</div>';
+    var so = document.getElementById("signout");
+    if (so) so.addEventListener("click", signOut);
+
+    var sites = await getSites();
+    var grid  = document.getElementById("grid");
+    var sub   = document.getElementById("subcount");
+
+    if (!sites){
+      grid.innerHTML="";
+      grid.appendChild(el('<div class="empty"><h2>Couldn\u2019t load your sites</h2><p>Refresh the page to try again.</p></div>'));
+      sub.textContent="";
+      return;
+    }
+
+    sites = tagDemoSites(sites);
+    sub.textContent = sites.length===0 ? "No sites yet" : sites.length+" site"+(sites.length===1?"":"s");
+    grid.innerHTML = "";
+
+    if (sites.length===0){
+      grid.appendChild(el(
+        '<div class="empty">'+
+          '<h2>Build your first website</h2>'+
+          '<p>Choose a template, add your details, generate with AI, then publish for $30/year.</p>'+
+          '<button class="btn btn-gold" onclick="createNewSite()">Choose a template \u2192</button>'+
+        '</div>'
+      ));
+      return;
+    }
+    sites.forEach(function(s){ grid.appendChild(siteCard(s)); });
+  }
+
+  function displayName(){ return (state.owner && (state.owner.name || state.owner.phone)) || "Your account"; }
+
+  async function getSites(){
+    if (DEMO) return tagDemoSites(demoSites());
+    try {
+      var r = await api(API+"/sites", { method:"GET" });
+      if (r.status===401){ renderLogin(); return null; }
+      if (!r.ok) return null;
+      return r.data.sites || [];
+    } catch(e){ return null; }
+  }
+
+  function tagDemoSites(sites){
+    var DEMO_PREFIXES = ["demo-business","demo-restaurant","demo-salon","demo-academy",
+      "demo-consultant","demo-realestate","demo-boutique","demo-grocery","demo-hardware",
+      "demo-sports","demo-church"];
+    return sites.map(function(s){
+      var sub = s.draft_subdomain || "";
+      var isDemo = DEMO_PREFIXES.some(function(p){ return sub === p || sub.startsWith(p+"-"); });
+      return isDemo ? Object.assign({}, s, { _is_demo: true }) : s;
+    });
+  }
+
+  function siteCard(s){
+    var st  = statusInfo(s);
+    var pub = publicUrl(s);
+    var live = (s.status==="published" || s.status==="grace");
+    var urlRow = live && pub
+      ? '<a href="'+esc(pub)+'" target="_blank" rel="noopener">'+esc(pub.replace(/^https:\/\//,""))+'</a>'
+      : '<span class="off">'+esc(pub ? pub.replace(/^https:\/\//,"") : "no address yet")+' \u00b7 not public yet</span>';
+
+    var planLabel = s.plan==="pro" ? "Pro" : "Starter";
+    var d = daysLeft(s);
+    var expiry = s._is_demo
+      ? "Demo site — no billing"
+      : (s.expires_at ? (d>0 ? "Renews in "+d+" day"+(d===1?"":"s") : "Expired") : "Not published");
+
+    // ── Actions with Delete button ────────────────────────────────────────
+    var actions =
+      '<a class="btn btn-ghost" href="'+esc(previewUrl(s))+'" target="_blank" rel="noopener">Preview</a>'+
+      '<a class="btn btn-ghost" href="'+esc(editorUrl(s))+'">Edit</a>'+
+      '<a class="btn btn-quiet" href="'+esc(switchTemplateUrl(s))+'" title="Switch template">&#x229E;</a>';
+
+    // Only show delete for non-demo sites
+    if (!s._is_demo) {
+      actions += '<button class="btn btn-danger" onclick="openDeleteModal(\''+esc(s.id)+'\',\''+esc(s.site_name||s.id)+'\')" title="Delete site">🗑️</button>';
+    }
+
+    if (!s._is_demo) {
+      if (s.status==="draft" || s.status==="pending_payment") {
+        actions += '<button class="btn btn-gold" onclick="startPublish(\''+esc(s.id)+'\',\''+esc(s.site_name||s.id)+'\',\''+esc(s.status)+'\')">🚀 Publish</button>';
+      } else if (s.status==="grace" || s.status==="suspended" || (s.status==="published" && d!=null && d<=14)) {
+        actions += '<button class="btn btn-gold" onclick="startPublish(\''+esc(s.id)+'\',\''+esc(s.site_name||s.id)+'\',\''+esc(s.status)+'\')">↺ Renew</button>';
+      }
+    }
+
+    return el(
+      '<div class="card">'+
+        '<div class="card-top">'+
+          '<h2>'+esc(s.site_name||"Untitled site")+'</h2>'+
+          '<span class="pill t-'+st.tone+'">'+esc(st.label)+'</span>'+
+        '</div>'+
+        '<p class="meaning">'+esc(st.meaning)+'</p>'+
+        '<div class="url">'+urlRow+'</div>'+
+        '<div class="meta">'+
+          '<span><span class="k">'+esc(planLabel)+'</span></span>'+
+          '<span>'+esc(expiry)+'</span>'+
+        '</div>'+
+        '<div class="actions">'+actions+'</div>'+
+      '</div>');
+  }
+
+  window.doRefresh = async function(){
+    var grid = document.getElementById("grid");
+    if(grid){ grid.innerHTML = '<div class="skeleton"></div><div class="skeleton"></div>'; }
+    var sites = await getSites();
+    if(sites === null){ if(grid) grid.innerHTML = '<div class="empty"><h2>Couldn\u2019t refresh</h2><p>Check your connection.</p></div>'; return; }
+    if(grid) grid.innerHTML = "";
+    var subEl = document.getElementById("subcount");
+    if(subEl){ var pub=sites.filter(function(s){return s.status==="published"||s.status==="grace";}).length; subEl.textContent = sites.length + " site" + (sites.length===1?"":"s") + " · " + pub + " live"; }
+    if(sites.length===0){
+      if(grid) grid.appendChild(el('<div class="empty"><h2>Build your first website</h2><p>Choose a template, add your details, generate with AI, then publish for $30/year.</p><button class="btn btn-gold" onclick="createNewSite()">Choose a template →</button></div>'));
+      return;
+    }
+    sites = tagDemoSites(sites);
+    if(grid) sites.forEach(function(s){ grid.appendChild(siteCard(s)); });
+  };
+
+  async function signOut(){
+    if (DEMO){ DEMO=false; state.owner=null; return renderLogin(); }
+    try { await api(AUTH+"/logout", { method:"POST" }); } catch(e){}
+    localStorage.removeItem("wcz_token");
+    state.owner=null; renderLogin();
+  }
+
+  function demoSites(){
+    return [
+      { id:"site_001", site_name:"Elite Sports Institute", status:"published", plan:"starter",
+        draft_subdomain:"elite", custom_domain:null, custom_domain_status:"none",
+        published_at:now-2*86400, expires_at:now+363*86400, ai_generations_used:1 },
+      { id:"site_test", site_name:"My First Site", status:"draft", plan:"starter",
+        draft_subdomain:"my-first-site", custom_domain:null, custom_domain_status:"none",
+        published_at:null, expires_at:null, ai_generations_used:0 }
+    ];
+  }
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+  PUBLISH / DOMAIN WISH / EMAIL ROUTING MODAL
+
+  CHANGE: the plan-pick and domain-wish steps (1 & 2) stay here — that's real
+  product logic (Starter vs Pro, ZISPA vs registrar) checkout.html doesn't
+  duplicate. Step 2's "Continue to payment" now saves the domain wish and
+  redirects to checkout.html instead of calling /publish inline — checkout.html
+  is the one place that talks to the auth Worker's publish/renew endpoints and
+  (critically) actually polls for confirmed payment instead of trusting the
+  return URL. This modal still owns the post-payment email-forwarding step,
+  which checkout.html hands back to via ?paid=1&site=<id>.
+════════════════════════════════════════════════════════════════════════ -->
+<div id="pub-overlay" style="display:none;position:fixed;inset:0;background:rgba(13,15,20,.55);z-index:200;align-items:center;justify-content:center;padding:20px">
+  <div style="background:#fff;border-radius:16px;width:100%;max-width:480px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.18);max-height:92vh;display:flex;flex-direction:column">
+    <div style="padding:16px 20px;border-bottom:1px solid #e3e5ea;display:flex;align-items:center;justify-content:space-between;flex-shrink:0">
+      <strong id="pub-modal-title" style="font-size:16px;font-family:'Space Grotesk'">Publish your site</strong>
+      <button onclick="closePubModal()" style="background:none;border:none;font-size:20px;color:#868a96;cursor:pointer;line-height:1">×</button>
+    </div>
+    <div id="pub-body" style="padding:20px;overflow-y:auto;flex:1"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var API      = "https://app.sale.co.zw/api";
+  var CHECKOUT = "https://www.sale.co.zw/checkout/";
+
+  var PLAN_PRICES = { starter: 30, pro: 60 };
+
+  var pubSiteId   = null;
+  var pubSiteName = null;
+  var pubPlan     = null;
+  var pubIsRenew  = false;
+
+  window.startPublish = function(id, name, status) {
+    pubSiteId   = id;
+    pubSiteName = name;
+    pubPlan     = null;
+    pubIsRenew  = (status === "grace" || status === "suspended");
+    document.getElementById("pub-modal-title").textContent = pubIsRenew ? "Renew your site" : "Publish your site";
+    document.getElementById("pub-overlay").style.display = "flex";
+    // Renewals keep the site's existing plan — skip straight to a confirm step.
+    if (pubIsRenew) { pubPlan = null; renderRenewConfirm(); }
+    else renderStep1_Plan();
+  };
+
+  window.closePubModal = function() {
+    document.getElementById("pub-overlay").style.display = "none";
+  };
+
+  document.getElementById("pub-overlay").addEventListener("click", function(e) {
+    if (e.target === this) closePubModal();
+  });
+
+  function renderRenewConfirm() {
+    setBody(
+      '<p style="font-size:13.5px;color:#4a4d59;margin:0 0 18px;line-height:1.6">Renew <strong>'+esc(pubSiteName)+'</strong> for another year at its current plan.</p>'+
+      '<button class="btn btn-gold" style="width:100%;justify-content:center" onclick="_goToCheckout()">Continue to payment →</button>'
+    );
+  }
+
+  function renderStep1_Plan() {
+    var action = "Publishing";
+    setBody(
+      '<p style="font-size:13.5px;color:#4a4d59;margin:0 0 18px;line-height:1.6">'+action+' <strong>'+esc(pubSiteName)+'</strong>. Choose your plan:</p>'+
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">'+
+        '<div style="border:2px solid #0F5B47;border-radius:12px;padding:14px">'+
+          '<div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#0F5B47;margin-bottom:4px">Starter</div>'+
+          '<div style="font-family:Space Grotesk,sans-serif;font-size:24px;font-weight:800">$'+PLAN_PRICES.starter+'<span style="font-size:12px;font-weight:400;color:#868a96">/yr</span></div>'+
+          '<div style="font-size:12px;color:#868a96;margin:4px 0 10px">yoursite.sale.co.zw</div>'+
+          '<div style="font-size:12px;color:#4a4d59;display:flex;flex-direction:column;gap:3px;margin-bottom:12px">'+
+            '<span>✓ AI content generation</span>'+
+            '<span>✓ Products &amp; gallery</span>'+
+            '<span>✓ Up to 3 email forwards</span>'+
+            '<span>✓ WhatsApp button</span>'+
+          '</div>'+
+          '<button class="btn btn-gold" style="width:100%;justify-content:center" onclick="_selectPlan(\'starter\')">Choose Starter — $'+PLAN_PRICES.starter+'/yr</button>'+
+        '</div>'+
+        '<div style="border:2px solid #7c3aed;border-radius:12px;padding:14px">'+
+          '<div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#7c3aed;margin-bottom:4px">Pro ⭐</div>'+
+          '<div style="font-family:Space Grotesk,sans-serif;font-size:24px;font-weight:800">$'+PLAN_PRICES.pro+'<span style="font-size:12px;font-weight:400;color:#868a96">/yr</span></div>'+
+          '<div style="font-size:12px;color:#868a96;margin:4px 0 10px">Your own .com domain</div>'+
+          '<div style="font-size:12px;color:#4a4d59;display:flex;flex-direction:column;gap:3px;margin-bottom:12px">'+
+            '<span>✓ Everything in Starter</span>'+
+            '<span>✓ Custom .com domain</span>'+
+            '<span>✓ Up to 10 email forwards</span>'+
+            '<span>✓ Priority support</span>'+
+          '</div>'+
+          '<button style="width:100%;justify-content:center;background:#f3eeff;color:#7c3aed;border:none;font-family:inherit;font-weight:600;font-size:14px;padding:10px 16px;border-radius:var(--r-sm,9px);cursor:pointer;display:inline-flex;align-items:center" onclick="_selectPlan(\'pro\')">Choose Pro — $'+PLAN_PRICES.pro+'/yr</button>'+
+        '</div>'+
+      '</div>'+
+      '<p style="font-size:12px;color:#868a96;text-align:center;margin-top:12px">All prices in USD · Annual · Secure payment via Paynow</p>'
+    );
+  }
+
+  window._selectPlan = function(plan) {
+    pubPlan = plan;
+    renderStep2_Domain();
+  };
+
+  function renderStep2_Domain() {
+    var tld  = pubPlan === "pro" ? ".com" : ".co.zw";
+    var reg  = pubPlan === "pro" ? "an international registrar" : "ZISPA";
+    setBody(
+      '<div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">'+
+        '<button onclick="_backToPlan()" style="background:none;border:1px solid #e3e5ea;border-radius:6px;padding:4px 10px;font-size:12px;color:#868a96;cursor:pointer;font-family:inherit">← Back</button>'+
+        '<span style="font-size:14px;font-weight:600;color:#1a1b22">Choose your domain name</span>'+
+      '</div>'+
+      '<p style="font-size:13px;color:#4a4d59;margin:0 0 16px;line-height:1.6">'+
+        'Enter up to <strong>3 name preferences</strong> in order. We\'ll check availability with '+reg+' and register your best available choice within <strong>1–2 business days</strong>.'+
+      '</p>'+
+      _domainField("dw_c1","1st choice (required)","e.g. elitesports",tld)+
+      _domainField("dw_c2","2nd choice (optional)","alternative name",tld)+
+      _domainField("dw_c3","3rd choice (optional)","fallback name",tld)+
+      '<p style="font-size:12px;color:#868a96;margin:8px 0 16px">Letters, numbers and hyphens only. We add <strong>'+tld+'</strong> for you.</p>'+
+      '<div style="display:flex;gap:10px">'+
+        '<button onclick="_backToPlan()" style="flex:1;padding:11px;border:1px solid #e3e5ea;border-radius:9px;background:#fff;font-size:14px;font-weight:600;color:#4a4d59;cursor:pointer;font-family:inherit">← Back</button>'+
+        '<button onclick="_saveDomainAndGoToCheckout()" class="btn btn-gold" style="flex:2;justify-content:center">Continue to payment →</button>'+
+      '</div>'
+    );
+  }
+
+  function _domainField(id, label, placeholder, tld) {
+    return '<div style="margin-bottom:10px">'+
+      '<label style="font-size:12px;font-weight:600;color:#4a4d59;display:block;margin-bottom:5px">'+label+'</label>'+
+      '<div style="display:flex;align-items:stretch;border:1px solid #e3e5ea;border-radius:9px;overflow:hidden;background:#fff">'+
+        '<input id="'+id+'" type="text" placeholder="'+placeholder+'"'+
+          ' style="flex:1;border:none;padding:11px 12px;font-size:14px;font-family:inherit;outline:none;min-width:0"'+
+          ' oninput="this.value=this.value.toLowerCase().replace(/[^a-z0-9-]/g,\'\').slice(0,63)">'+
+        '<span style="background:#f3f4f6;padding:11px 14px;font-size:13px;font-weight:600;color:#868a96;border-left:1px solid #e3e5ea;white-space:nowrap;flex-shrink:0">'+tld+'</span>'+
+      '</div>'+
+    '</div>';
+  }
+
+  window._backToPlan = function() { renderStep1_Plan(); };
+
+  // Save the domain wish (non-fatal if it fails), then hand off to checkout.html.
+  // checkout.html is what actually calls the auth Worker's /publish or /renew,
+  // sends the browser to Paynow, and polls for real confirmation on return.
+  window._saveDomainAndGoToCheckout = async function() {
+    var c1 = (document.getElementById("dw_c1")||{}).value || "";
+    var c2 = (document.getElementById("dw_c2")||{}).value || "";
+    var c3 = (document.getElementById("dw_c3")||{}).value || "";
+    c1 = c1.trim(); c2 = c2.trim(); c3 = c3.trim();
+    if (!c1) { alert("Please enter at least one domain name preference."); return; }
+
+    setBody('<div style="text-align:center;padding:30px 20px"><div style="font-size:28px;margin-bottom:12px">⏳</div><p style="color:#4a4d59;font-size:14px">Saving your domain preferences…</p></div>');
+
+    var token = localStorage.getItem("wcz_token");
+    var headers = { "Content-Type": "application/json", "Authorization": "Bearer " + (token || "") };
+
+    try {
+      await fetch(API + "/sites/" + encodeURIComponent(pubSiteId) + "/domain-wish", {
+        method: "POST", headers: headers,
+        body: JSON.stringify({ choice_1: c1, choice_2: c2 || null, choice_3: c3 || null })
+      });
+    } catch(e) { /* non-fatal — checkout can still proceed */ }
+
+    _goToCheckout();
+  };
+
+  window._goToCheckout = function() {
+    var qs = "?site=" + encodeURIComponent(pubSiteId) +
+             "&purpose=" + (pubIsRenew ? "renewal" : "publish") +
+             (pubPlan ? "&plan=" + encodeURIComponent(pubPlan) : "");
+    location.href = CHECKOUT + qs;
+  };
+
+  function renderStep3_PostPayment(siteId, renewed) {
+    document.getElementById("pub-modal-title").textContent = renewed ? "🎉 Site renewed!" : "🎉 Site published!";
+    setBody(
+      '<div style="text-align:center;padding:4px 0 16px">'+
+        '<div style="font-size:44px;margin-bottom:10px">🎉</div>'+
+        '<h2 style="font-family:Space Grotesk,sans-serif;font-size:19px;margin:0 0 6px;color:#1a1b22">'+(renewed ? "Your site has been renewed!" : "Your site is live!")+'</h2>'+
+        '<p style="font-size:13.5px;color:#4a4d59;margin:0 0 20px">'+(renewed ? "Payment confirmed. Your subscription has been extended by one year." : "Payment confirmed. Your domain will be registered within 1–2 business days and you\'ll get a WhatsApp notification.")+'</p>'+
+      '</div>'+
+      (renewed ? '' :
+      '<div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:16px;margin-bottom:16px">'+
+        '<div style="font-weight:700;font-size:14px;color:#0F5B47;margin-bottom:6px">📧 Set up professional email forwarding</div>'+
+        '<p style="font-size:13px;color:#4a4d59;margin:0 0 12px">Get an address like <strong>info@yoursite.co.zw</strong> that forwards to your Gmail — free, included in your plan.</p>'+
+        '<label style="font-size:12px;font-weight:600;color:#4a4d59;display:block;margin-bottom:5px">Email prefix</label>'+
+        '<div style="display:flex;align-items:stretch;border:1px solid #d1fae5;border-radius:8px;overflow:hidden;background:#fff;margin-bottom:8px">'+
+          '<input id="er_local" type="text" placeholder="info"'+
+            ' style="flex:1;border:none;padding:10px 12px;font-size:14px;font-family:inherit;outline:none;min-width:0"'+
+            ' oninput="this.value=this.value.toLowerCase().replace(/[^a-z0-9._+-]/g,\'\').slice(0,64)">'+
+          '<span style="background:#f0fdf4;padding:10px 12px;font-size:13px;font-weight:600;color:#0F5B47;border-left:1px solid #d1fae5;white-space:nowrap;flex-shrink:0">@yoursite.co.zw</span>'+
+        '</div>'+
+        '<label style="font-size:12px;font-weight:600;color:#4a4d59;display:block;margin-bottom:5px">Forwards to</label>'+
+        '<input id="er_dest" type="email" placeholder="your@gmail.com"'+
+          ' style="width:100%;border:1px solid #d1fae5;border-radius:8px;padding:10px 12px;font-size:14px;font-family:inherit;outline:none;box-sizing:border-box;margin-bottom:10px">'+
+        '<button onclick="_setupEmailRoute(\''+esc(siteId)+'\')" style="width:100%;background:#0F5B47;color:#fff;border:none;border-radius:8px;padding:11px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit">Set up email forwarding</button>'+
+        '<div id="er_msg" style="font-size:12px;margin-top:8px;min-height:16px"></div>'+
+      '</div>')+
+      '<button onclick="closePubModal()" class="btn btn-ghost" style="width:100%;justify-content:center">Done</button>'
+    );
+  }
+
+  window._setupEmailRoute = async function(siteId) {
+    var local = ((document.getElementById("er_local")||{}).value || "").trim().toLowerCase().replace(/[^a-z0-9._+-]/g,"");
+    var dest  = ((document.getElementById("er_dest")||{}).value || "").trim();
+    var msgEl = document.getElementById("er_msg");
+    if (!local)             { msgEl.style.color="#c0392b"; msgEl.textContent="Enter an email prefix (e.g. info)"; return; }
+    if (!dest||!dest.includes("@")) { msgEl.style.color="#c0392b"; msgEl.textContent="Enter a valid destination email"; return; }
+    msgEl.style.color="#0F5B47"; msgEl.textContent="Setting up…";
+    try {
+      var token = localStorage.getItem("wcz_token");
+      var r = await fetch(API + "/sites/" + encodeURIComponent(siteId) + "/email-routes", {
+        method: "POST",
+        headers: { "Content-Type":"application/json", "Authorization":"Bearer "+(token||"") },
+        body: JSON.stringify({ local_part: local, destination: dest })
+      });
+      var data = {}; try { data = await r.json(); } catch(e) {}
+      if (r.ok) {
+        msgEl.style.color="#0F5B47";
+        msgEl.textContent = "✓ Check your inbox at "+dest+" for a verification link from Cloudflare to activate "+local+"@sale.co.zw.";
+        document.querySelector("#er_msg").closest("div").querySelector("button").disabled = true;
+      } else {
+        msgEl.style.color="#c0392b";
+        msgEl.textContent = data.message || data.error || "Something went wrong. Try again.";
+      }
+    } catch(e) {
+      msgEl.style.color="#c0392b"; msgEl.textContent = "Network error. Try later from your dashboard.";
+    }
+  };
+
+  function setBody(html) {
+    document.getElementById("pub-body").innerHTML = html;
+  }
+
+  // Handle return from checkout.html after a CONFIRMED payment (?paid=1&site=xxx[&renewed=1])
+  (function checkReturn(){
+    var p = new URLSearchParams(location.search);
+    if (p.get("paid") === "1") {
+      history.replaceState({}, "", location.pathname);
+      var siteId  = p.get("site") || "";
+      var renewed = p.get("renewed") === "1";
+      setTimeout(function() {
+        if (siteId) {
+          document.getElementById("pub-modal-title").textContent = renewed ? "Site renewed" : "Publish your site";
+          document.getElementById("pub-overlay").style.display = "flex";
+          renderStep3_PostPayment(siteId, renewed);
+        }
+        if (typeof doRefresh === "function") doRefresh();
+      }, 400);
+    }
+  })();
+
+  function esc(s){ return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];}); }
+})();
+</script>
+
+</body>
+</html>
